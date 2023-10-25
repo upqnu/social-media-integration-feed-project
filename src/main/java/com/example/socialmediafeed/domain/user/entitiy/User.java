@@ -1,13 +1,25 @@
 package com.example.socialmediafeed.domain.user.entitiy;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.example.socialmediafeed.domain.hashtag.entity.Hashtag;
+import jakarta.persistence.*;
+import lombok.Getter;
 
+@Getter
 @Table(name = "user")
 @Entity
 public class User {
     @Id
-    public Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "password", length = 500, nullable = false)
+    private String password;
+
+    @OneToOne
+    @JoinColumn(name = "hashtag_id", unique = true)
+    private Hashtag hashtag;
 }
