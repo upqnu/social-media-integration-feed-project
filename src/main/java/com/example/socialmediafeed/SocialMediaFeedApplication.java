@@ -1,13 +1,13 @@
-package com.example.skeleton;
+package com.example.socialmediafeed;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SkeletonApplication {
+public class SocialMediaFeedApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SkeletonApplication.class, args);
+        SpringApplication.run(SocialMediaFeedApplication.class, args);
     }
 
 }
