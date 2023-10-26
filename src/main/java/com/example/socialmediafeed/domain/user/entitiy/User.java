@@ -19,7 +19,14 @@ public class User {
     @Column(name = "password", length = 500, nullable = false)
     private String password;
 
+    @Column(name = "certification_number", length = 5, unique = true)
+    private String certificationNumber;
+
+    @Enumerated(value = EnumType.STRING)
+    private IsActive isActive;
+
     @OneToOne
     @JoinColumn(name = "hashtag_id", unique = true)
     private Hashtag hashtag;
+
 }
