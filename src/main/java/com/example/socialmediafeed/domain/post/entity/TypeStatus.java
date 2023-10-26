@@ -1,5 +1,7 @@
 package com.example.socialmediafeed.domain.post.entity;
 
+import lombok.Getter;
+
 @Getter
 public enum TypeStatus {
     FACEBOOK("facebook"),
