@@ -46,4 +46,13 @@ public class User {
         this.hashtag = hashtag;
     }
 
+    public void validateCertificationNumber(String certificationNumber) {
+        if(!this.certificationNumber.equals(certificationNumber))
+            throw new IllegalArgumentException("인증번호가 일치하지 않습니다.");
+    }
+
+    public void activeAccount() {
+        this.isActive = IsActive.ACTIVE;
+    }
+
 }
