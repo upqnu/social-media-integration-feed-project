@@ -2,6 +2,7 @@ package com.example.socialmediafeed.domain.user.controller;
 
 import com.example.socialmediafeed.domain.user.dto.ApprovalReqDto;
 import com.example.socialmediafeed.domain.user.dto.SignupReqDto;
+import com.example.socialmediafeed.domain.user.dto.SignupResDto;
 import com.example.socialmediafeed.domain.user.service.UserApprovalService;
 import com.example.socialmediafeed.domain.user.service.UserSignupService;
 import jakarta.validation.Valid;
@@ -19,7 +20,7 @@ public class UserApiController {
     private final UserApprovalService userApprovalService;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<Object> signUp(@RequestBody
+    public ResponseEntity<SignupResDto> signUp(@RequestBody
                                          @Valid
                                          SignupReqDto signupReqDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userSignupService.signUp(signupReqDto));
