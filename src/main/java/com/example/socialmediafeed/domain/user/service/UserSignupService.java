@@ -29,6 +29,8 @@ public class UserSignupService {
         //5자의 무작위 번호 생성 및 중복 검사: 문자, 숫자 포함
         String randomNumber = generateNotUsedRandomNumber();
 
+        //todo: 이메일 인증 메일 발송
+
         //DB에 해당 정보 저장
         return SignupResDto.from(userRepository.save(signupReqDto.toEntity(encoder, randomNumber)));
     }
