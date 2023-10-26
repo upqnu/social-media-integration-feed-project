@@ -21,15 +21,19 @@ public class Post {
     @Enumerated(EnumType.STRING)
     private TypeStatus type;
 
+    @Column(name = "title")
     private String title;
 
     @Column(length = 20)
     private String content;
 
+    @Column(name = "view_count")
     private Integer viewCount;
 
+    @Column(name = "like_count")
     private Integer likeCount;
 
+    @Column(name = "share_count")
     private Integer shareCount;
 
     @Column(updatable = false)
