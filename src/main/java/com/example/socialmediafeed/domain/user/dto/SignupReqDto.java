@@ -27,16 +27,17 @@ public class SignupReqDto {
     }
 
     public User toEntity(PasswordEncoder encoder,
-                         String certificationNumber) {
+                         String certificationNumber,
+                         Hashtag hashtag) {
         return User.builder()
                 .email(email)
                 .password(encoder.encode(password))
                 .certificationNumber(certificationNumber)
-                .hashtag(toHashtagEntity())
+                .hashtag(hashtag)
                 .build();
     }
 
-    private Hashtag toHashtagEntity() {
+    public Hashtag toHashtagEntity() {
         return Hashtag.builder()
                 .name(hashtag)
                 .build();

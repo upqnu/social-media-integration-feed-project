@@ -1,5 +1,6 @@
 package com.example.socialmediafeed.domain.user.service;
 
+import com.example.socialmediafeed.domain.hashtag.entity.Hashtag;
 import com.example.socialmediafeed.domain.user.dto.SignupReqDto;
 import com.example.socialmediafeed.domain.user.dto.SignupResDto;
 import com.example.socialmediafeed.domain.user.repository.HashtagRepoForUser;
@@ -32,16 +33,17 @@ public class UserSignupService {
         //todo: 이메일 인증 메일 발송
 
         //DB에 해당 정보 저장
-        return SignupResDto.from(userRepository.save(signupReqDto.toEntity(encoder, randomNumber)));
+        Hashtag hashtag = hashtagRepoForUser.save(signupReqDto.toHashtagEntity());
+        return SignupResDto.from(userRepository.save(signupReqDto.toEntity(encoder, randomNumber, hashtag)));
     }
 
     //todo: exception을 business exception으로 갈아야 합니다.
     private void validate(SignupReqDto signupReqDto) {
         //해당 해쉬태그가 이미 존재하는 해쉬태그인지 검사
-        if(hashtagRepoForUser.existsByName(signupReqDto.getHashtag()))
+        if (hashtagRepoForUser.existsByName(signupReqDto.getHashtag()))
             throw new EntityExistsException();
         //헤당 이메일이 존재하는 이메일인지 확인
-        if(userRepository.existsByEmail(signupReqDto.getEmail()))
+        if (userRepository.existsByEmail(signupReqDto.getEmail()))
             throw new EntityExistsException();
     }
 
@@ -49,9 +51,9 @@ public class UserSignupService {
         String randomNumber = RandomStringUtils.random(5, true, true);
 
         String result = randomNumber;
-        if(userRepository.existsByCertificationNumber(result)) result = randomNumber;
+        if (userRepository.existsByCertificationNumber(result)) result = randomNumber;
 
-        log.info("Certification Number::: {}",result);
+        log.info("Certification Number::: {}", result);
 
         return result;
     }
