@@ -15,6 +15,10 @@ public class PostHashtag {
     private Long id;
 
     @OneToMany
-    @JoinColumn(name = "post_hashtag_id")
-    private List<Post> taggedPosts;
+    @JoinColumn(name = "post_id")
+    private List<Post> posts;
+
+    @OneToMany
+    @JoinColumn(name = "hashtag_id")
+    private List<Hashtag> hashtags;
 }
