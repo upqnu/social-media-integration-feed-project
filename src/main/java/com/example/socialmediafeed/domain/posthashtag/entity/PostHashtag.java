@@ -1,5 +1,6 @@
 package com.example.socialmediafeed.domain.posthashtag.entity;
 
+import com.example.socialmediafeed.domain.hashtag.entity.Hashtag;
 import com.example.socialmediafeed.domain.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.Getter;
