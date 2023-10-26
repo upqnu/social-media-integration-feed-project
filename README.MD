@@ -1,7 +1,7 @@
 ![logo](https://static.wanted.co.kr/images/events/3178/58ac3248.jpg)
 
 # 소셜 미디어 통합 Feed 서비스
-고객의 메세지를 태그, 스팸 처리 등 자동으로 분류해주는 웹 서비스
+Instagram, Twitter, Facebook 등의 소셜 미디어 피드는 여기에서!
 
 <br/>
 
