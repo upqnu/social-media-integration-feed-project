@@ -36,10 +36,11 @@ public class Post {
     @Column(name = "share_count")
     private Integer shareCount;
 
-    @Column(updatable = false)
+    @Column(name = "created_at", updatable = false)
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @Column(name = "updated_at")
     @LastModifiedDate
     private LocalDateTime updatedAt;
 }
