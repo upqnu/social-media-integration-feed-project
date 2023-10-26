@@ -1,5 +1,6 @@
 package com.example.socialmediafeed.domain.post.entity;
 
+@Getter
 public enum TypeStatus {
     FACEBOOK("facebook"),
     TWITTER("twitter"),
@@ -10,9 +11,5 @@ public enum TypeStatus {
 
     TypeStatus(String status) {
         this.status = status;
-    }
-
-    public String getStatus() {
-        return status;
     }
 }
