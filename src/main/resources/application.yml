@@ -1,1 +1,8 @@
-
+spring:
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+  h2:
+    console:
+        enabled: true

@@ -1,19 +1,16 @@
 package com.example.socialmediafeed.domain.post.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Post {
 
@@ -49,4 +46,22 @@ public class Post {
     @Column(name = "updated_at")
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    @Builder
+    public Post (String contentId,
+                 TypeStatus type,
+                 String title,
+                 String content,
+                 Integer viewCount,
+                 Integer likeCount,
+                 Integer shareCount) {
+        this.contentId = contentId;
+        this.type = type;
+        this.title = title;
+        this.content = content;
+        this.viewCount = viewCount;
+        this.likeCount = likeCount;
+        this.shareCount = shareCount;
+    }
+
 }

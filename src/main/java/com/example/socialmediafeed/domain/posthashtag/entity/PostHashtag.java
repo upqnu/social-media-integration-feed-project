@@ -5,8 +5,6 @@ import com.example.socialmediafeed.domain.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.Getter;
 
-import java.util.List;
-
 @Getter
 @Entity
 public class PostHashtag {
@@ -15,11 +13,12 @@ public class PostHashtag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "post_id")
-    private List<Post> posts;
+    private Post post;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "hashtag_id")
-    private List<Hashtag> hashtags;
+    private Hashtag hashtag;
+
 }
