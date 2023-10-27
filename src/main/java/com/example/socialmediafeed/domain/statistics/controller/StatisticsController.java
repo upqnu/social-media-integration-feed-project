@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 /// 통계 관련 API
-@Controller
+@RestController
 @RequestMapping("/statistics")
 @RequiredArgsConstructor
 public class StatisticsController {
@@ -19,7 +19,7 @@ public class StatisticsController {
 
     /**
      * 통계 반환 메서드
-     * @param hasthag
+     * @param hashtag
      * @param type
      * @param start
      * @param end
@@ -27,9 +27,9 @@ public class StatisticsController {
      * @return List<StatisticsResponseDto>
      */
     @GetMapping
-    @ResponseBody
+    @ResponseBody // todo : ResponseEntity로 변경
     public List<StatisticsResponseDto> getStatistics (
-            @RequestParam(required = false) String hasthag,
+            @RequestParam(required = false) String hashtag,
             @RequestParam String type, // date, hour 둘 중 하나
             @RequestParam(required = false) Date start,
             @RequestParam(required = false) Date end,
