@@ -1,17 +1,28 @@
 package com.example.socialmediafeed.domain.user.controller;
 
 import com.example.socialmediafeed.IntegrationTest;
+import com.example.socialmediafeed.domain.user.dto.ApprovalReqDto;
 import com.example.socialmediafeed.domain.user.dto.SignupReqDto;
+import com.example.socialmediafeed.domain.user.entitiy.User;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
+import com.example.socialmediafeed.domain.HashtagSetup;
+import com.example.socialmediafeed.domain.UserSetup;
 
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class UserApiControllerTest extends IntegrationTest {
+
+    @Autowired
+    UserSetup userSetup;
+    @Autowired
+    HashtagSetup hashtagSetup;
 
     @Test
     void sign_up_success() throws Exception {
@@ -83,6 +94,23 @@ class UserApiControllerTest extends IntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
         );
+    }
+
+    @Test
+    void approval_success() throws Exception {
+        //given
+        User user = userSetup.build(hashtagSetup.build());
+        //when
+        ApprovalReqDto reqDto = ApprovalReqDto.from(user.getCertificationNumber());
+        //then
+        mvc.perform(
+                patch("/users/{id}/approval", user.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(reqDto))
+        )
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
     }
 
 }
