@@ -6,3 +6,8 @@ spring:
   h2:
     console:
         enabled: true
+
+jwt:
+  header: Authorization
+  secret: x!A%D*G-KaPdSgVkYp3s5v8y/B?E(H+M
+  token-validity-in-seconds: 86400

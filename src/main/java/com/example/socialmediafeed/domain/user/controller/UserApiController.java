@@ -4,6 +4,7 @@ import com.example.socialmediafeed.domain.user.dto.ApprovalReqDto;
 import com.example.socialmediafeed.domain.user.dto.SignupReqDto;
 import com.example.socialmediafeed.domain.user.dto.SignupResDto;
 import com.example.socialmediafeed.domain.user.service.UserApprovalService;
+import com.example.socialmediafeed.domain.user.service.UserSignInService;
 import com.example.socialmediafeed.domain.user.service.UserSignupService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +18,20 @@ import org.springframework.web.bind.annotation.*;
 public class UserApiController {
 
     private final UserSignupService userSignupService;
+    private final UserSignInService userSignInService;
     private final UserApprovalService userApprovalService;
+
 
     @PostMapping("/sign-up")
     public ResponseEntity<SignupResDto> signUp(@RequestBody
                                          @Valid
                                          SignupReqDto signupReqDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userSignupService.signUp(signupReqDto));
+    }
+
+    @PostMapping("/sign-in")
+    public ResponseEntity<Object> signIn() {
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PatchMapping("/{id}/approval")
