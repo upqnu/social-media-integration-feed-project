@@ -4,19 +4,14 @@ import com.example.socialmediafeed.domain.post.entity.Post;
 import com.example.socialmediafeed.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @RequestMapping("/posts")
@@ -29,27 +24,16 @@ public class PostController {
     public ResponseEntity<Page<Post>> getPosts(
             @RequestParam(required = false) String hashtag,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int page_count,
+            @RequestParam(defaultValue = "5") int page_count,
             @RequestParam(defaultValue = "createdAt") String sortBy,
             @RequestParam(defaultValue = "desc") String sortOrder
     ) {
-        List<Post> allPosts = postService.getAllPosts();
+        Page<Post> postsList = postService.getPosts(hashtag, page, page_count, sortBy, sortOrder);
 
-        Sort.Direction direction = Sort.Direction.fromString(sortOrder);
-        Sort sort = Sort.by(direction, sortBy);
-        Pageable pageable = PageRequest.of(page, page_count, sort);
-
-        Page<Post> postsList;
-
-        if (hashtag == null) {
-            postsList = new PageImpl<>(allPosts, pageable, allPosts.size());
-        } else {
-            postsList = postService.findPostByTitleAndContent(hashtag, pageable);
-            if (postsList.getNumberOfElements() == 0) {
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body((Page<Post>) Map.of("message", "게시물을 찾을 수 없습니다."));
-            }
+        if (postsList.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NO_CONTENT)
+                    .body(postsList);
         }
 
         return ResponseEntity.ok(postsList);
