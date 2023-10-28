@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long>, QuerydslPredicateExecutor<Post> {
 
-    @Query("SELECT p FROM Post p WHERE lower(p.content) LIKE %:hashtag% ESCAPE '!'")
+    @Query("SELECT p FROM Post p WHERE lower(p.content) LIKE %:hashtag% ESCAPE ' '")
     List<Post> findByContentContainingHashtag(@Param("hashtag") String hashtag);
 }
