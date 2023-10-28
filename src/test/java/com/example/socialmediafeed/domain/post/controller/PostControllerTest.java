@@ -1,73 +1,64 @@
 package com.example.socialmediafeed.domain.post.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import com.example.socialmediafeed.domain.post.entity.Post;
-import com.example.socialmediafeed.domain.post.service.PostService;
-import org.junit.jupiter.api.BeforeEach;
+import com.example.socialmediafeed.IntegrationTest;
+import com.example.socialmediafeed.SocialMediaFeedApplication;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = SocialMediaFeedApplication.class)
 @AutoConfigureMockMvc
-class PostControllerTest {
+@Transactional
+class PostControllerTest extends IntegrationTest {
 
-    @InjectMocks
-    private PostController postController;
+    @Test
+    public void testTotalPostsCount() throws Exception {
+        String uri = "/posts";
 
-    @Mock
-    private PostService postService;
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andReturn();
 
-    @Autowired
-    private MockMvc mockMvc;
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
 
-    @BeforeEach
-    public void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(postController).build();
+        String content = mvcResult.getResponse().getContentAsString();
+        int totalElements = (int) new ObjectMapper().readValue(content, Map.class).get("totalElements");
+
+        assertEquals(20, totalElements);
     }
 
     @Test
     public void testGetPosts() throws Exception {
-        // given
-        when(postService.getAllPosts()).thenReturn(new ArrayList<>());
 
-        // when
-        mockMvc.perform(get("/posts"))
-                // then
-                .andExpect(status().isOk());
-    }
+        String uri = "/posts";
 
-    @Test
-    public void testGetPostsByHashtag() throws Exception {
-        // given
-        String hashtag = "#java";
-        List<Post> posts = new ArrayList<>();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+                        .param("hashtag", "java")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andReturn();
 
-        Pageable pageable = Pageable.unpaged();
-        Page<Post> page = new PageImpl<>(posts);
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
 
-        when(postService.findPostByTitleAndContent(any(), any())).thenReturn(page);
+        mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+                        .param("hashtag", "soccer")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andReturn();
 
-        // when
-        mockMvc.perform(get("/posts?search=" + hashtag))
-                // then
-                .andExpect(status().isOk());
+        status = mvcResult.getResponse().getStatus();
+        assertEquals(204, status);
     }
 }
