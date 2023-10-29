@@ -34,6 +34,7 @@ public class StatisticsController {
             @RequestParam(required = false) Date start,
             @RequestParam(required = false) Date end,
             @RequestParam(required = false) String value) {
+        System.out.println("controller");
         return statisticsService.getStatistics();
     }
 }

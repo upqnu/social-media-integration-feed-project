@@ -25,12 +25,18 @@ public class StatisticsService {
      * @return List<StatisticsResponseDto.
      */
     public List<StatisticsResponseDto> getStatistics(){
-        // todo : Request Parameter 기준으로 StatisticsResponseDto 반환하도록 변경(현재는 dummy data형식)
-        StatisticsResponseDto statisticsResponseDto = StatisticsResponseDto.builder().time(LocalDateTime.now()).count(1).build();
-        List<StatisticsResponseDto> statisticsResponseDtoList = new ArrayList<>();
-        statisticsResponseDtoList.add(statisticsResponseDto);
+
+        // 1. 모든 글에 대해서 하루 단위로 조회하기
+        // hashtag : 일단 이 부분 제외하기
+        // start : 일단 이 부분 제외하기
+        // end : 일단 이 부분 제외하기
+        // count : like_count 기준으로 조회하기(2, 3번은 이 부분을 바꿀 예정)
+        // 예상되는 결과 => {"2023-10-01" : 9, "2023-10-02" : 10, "2023-10-03" : 10}
+        // Post에서 조회하자. 2023-10-29기준으로
+        List<StatisticsResponseDto> statisticsResponseDtoList = statisticsRepository.DateLikeCount();
         return statisticsResponseDtoList;
     }
 
 
 }
+
