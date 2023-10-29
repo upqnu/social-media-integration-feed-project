@@ -51,7 +51,6 @@ public class StatisticsService {
      * @return Map<LocalDateTime, LocalDateTime>
      */
     public Map<LocalDateTime, LocalDateTime> dateTimeMap(String hashtag, String start, String end, String type) {
-        // todo : hashtag 기준 검색도 구현하기
 
         // == 날짜 목록 반환 == //
         List<LocalDate> DateTimeList = getDatesBetweenTwoDates(start, end, type);

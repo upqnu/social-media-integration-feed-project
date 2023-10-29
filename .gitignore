@@ -35,6 +35,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
-## todo : application.yml 바꾸기, 삭제할 예정입니다.
-src/main/resources/application.yml

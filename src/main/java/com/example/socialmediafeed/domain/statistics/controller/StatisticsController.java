@@ -28,13 +28,12 @@ public class StatisticsController {
      * @return List<StatisticsResponseDto>
      */
     @GetMapping
-    @ResponseBody
     public ResponseEntity getStatistics(
             @RequestParam(required = false) String hashtag,
             @RequestParam String type, // date, hour 둘 중 하나
             @RequestParam(required = false) String start,
             @RequestParam(required = false) String end,
             @RequestParam(required = false) String value) {
-        return new ResponseEntity<>(statisticsService.getStatistics(hashtag, start, end, type, value), HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(statisticsService.getStatistics(hashtag, start, end, type, value));
     }
 }
