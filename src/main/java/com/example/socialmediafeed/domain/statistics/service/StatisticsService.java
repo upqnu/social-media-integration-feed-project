@@ -31,48 +31,62 @@ public class StatisticsService {
      * @return List<StatisticsResponseDto.
      */
     public List<StatisticsResponseDto> getStatistics(String hashtag, String start, String end, String type, String value) {
-        // type는 date또는 hour이 올 수 있다.
-        Map<LocalDateTime, LocalDateTime> dateTimeMap = dateTimeList(hashtag, start, end, type);
+
+        // == dateTimeMap : 검색하는 시간 단위를 {시작:끝} 형태로 저장한 Map  == //
+        Map<LocalDateTime, LocalDateTime> dateTimeMap = dateTimeMap(hashtag, start, end, type);
+
         List<StatisticsResponseDto> statisticsResponseDtoList = statisticsRepository.getStatistics(hashtag, dateTimeMap, value);
         return statisticsResponseDtoList;
     }
 
-    public Map<LocalDateTime, LocalDateTime> dateTimeList(String hashtag, String start, String end, String type) {
+    /**
+     * 검색하는 시간 단위를 {시작: 끝} 형태로 반환
+     * @param hashtag
+     * @param start
+     * @param end
+     * @param type
+     * @return Map<LocalDateTime, LocalDateTime>
+     */
+    public Map<LocalDateTime, LocalDateTime> dateTimeMap(String hashtag, String start, String end, String type) {
+        // todo : hashtag 기준 검색도 구현하기
 
-        Map<LocalDateTime, LocalDateTime> unitDateTimeList = new HashMap<>();
+        // == 날짜 목록 반환 == //
+        List<LocalDate> DateTimeList = getDatesBetweenTwoDates(start, end);
 
-        // 날짜 구간 설정
-        LocalDate startDateTime = LocalDate.now().minusDays(7);
-        LocalDate endDateTime = LocalDate.now().atTime(LocalTime.MAX).toLocalDate();
-        if (start != null) {
-            startDateTime = LocalDate.parse(start, DateTimeFormatter.ISO_DATE);
-        }
-        if (end != null) {
-            endDateTime = LocalDate.parse(end, DateTimeFormatter.ISO_DATE);
-        }
+        // == 시작과 끝을 시간 단위로 반환 == //
+        Map<LocalDateTime, LocalDateTime> dateTimeMap = new HashMap<>();
+        for (LocalDate date : DateTimeList) {
 
-        // 날짜별 시작 시간과 종료 시간을 LocalDateTime으로
-        List<LocalDate> localDateList = getDatesBetweenTwoDates(startDateTime, endDateTime);
-        for (LocalDate date : localDateList) {
+            // 하루 단위
             if (Objects.equals(type, "date")) {
-                unitDateTimeList.put(date.atStartOfDay(), date.atTime(LocalTime.MAX));
-            } else if (Objects.equals(type, "hour")) {
+                dateTimeMap.put(date.atStartOfDay(), date.atTime(LocalTime.MAX));
+            }
+
+            // 시간 단위
+            else if (Objects.equals(type, "hour")) {
                 LocalDateTime st = date.atStartOfDay();
                 LocalDateTime fn = st.plusHours(1).minusNanos(1);
                 for (int i = 0; i < 24; i++) {
-                    unitDateTimeList.put(st.plusHours(i), fn.plusHours(i));
+                    dateTimeMap.put(st.plusHours(i), fn.plusHours(i));
                 }
             }
         }
 
-        // 날짜별
-        return unitDateTimeList;
+        return dateTimeMap;
     }
 
-    private static List<LocalDate> getDatesBetweenTwoDates(LocalDate startDate, LocalDate endDate) {
-        List<LocalDate> getDatesBetweenTwoDates = startDate.datesUntil(endDate).collect(Collectors.toList());
-        getDatesBetweenTwoDates.add(endDate);
-        return getDatesBetweenTwoDates;
+    /**
+     * 날짜 구간(start, end)에 맞는 날짜 목록 반환
+     * @param start
+     * @param end
+     * @return ["2023-10-25", "2023-10-26", "2023-10-27"]
+     */
+    private static List<LocalDate> getDatesBetweenTwoDates(String start, String end) {
+        LocalDate startDateTime = start != null ? LocalDate.parse(start, DateTimeFormatter.ISO_DATE) : LocalDate.now().minusDays(7);
+        LocalDate endDateTime = end != null ? LocalDate.parse(end, DateTimeFormatter.ISO_DATE) : LocalDate.now().atTime(LocalTime.MAX).toLocalDate();
+        List<LocalDate> DateTimeList = startDateTime.datesUntil(endDateTime).collect(Collectors.toList());
+        DateTimeList.add(endDateTime);
+        return DateTimeList;
     }
 
 }

@@ -18,30 +18,41 @@ public class StatisticsRepositoryImpl implements StatisticsRepositoryCustom {
 
     @Override
     public List<StatisticsResponseDto> getStatistics(String hashtag, Map<LocalDateTime, LocalDateTime> dateTimeMap, String value) {
-        List<StatisticsResponseDto> statisticsResponseDtoList = new ArrayList<>();
-        for (Map.Entry<LocalDateTime, LocalDateTime> dateTime : dateTimeMap.entrySet()) {
 
-            // 좋아요, 조회수, 공유수, 게시글 수 기준으로 조회하기 //
+        List<StatisticsResponseDto> statisticsResponseDtoList = new ArrayList<>();
+
+        for (Map.Entry<LocalDateTime, LocalDateTime> dateTime : dateTimeMap.entrySet()) {
             Integer dateCount = 0;
+
+            // 조회수 기준
             if (Objects.equals(value, "view_count")) {
                 dateCount = queryFactory
                         .select(post.viewCount.sum())
                         .from(post)
                         .where(post.createdAt.between(dateTime.getKey(), dateTime.getValue()))
                         .fetchFirst();
-            } else if (Objects.equals(value, "like_count")) {
+            }
+
+            // 좋아요 기준
+            else if (Objects.equals(value, "like_count")) {
                 dateCount = queryFactory
                         .select(post.likeCount.sum())
                         .from(post)
                         .where(post.createdAt.between(dateTime.getKey(), dateTime.getValue()))
                         .fetchFirst();
-            } else if (Objects.equals(value, "share_count")) {
+            }
+
+            // 공유수 기준
+            else if (Objects.equals(value, "share_count")) {
                 dateCount = queryFactory
                         .select(post.shareCount.sum())
                         .from(post)
                         .where(post.createdAt.between(dateTime.getKey(), dateTime.getValue()))
                         .fetchFirst();
-            } else {
+            }
+
+            // 게시글 수 기준
+            else {
                 dateCount = Math.toIntExact(queryFactory
                         .select(post.count())
                         .from(post)
@@ -49,6 +60,7 @@ public class StatisticsRepositoryImpl implements StatisticsRepositoryCustom {
                         .fetchFirst());
             }
 
+            // count 값 더하기
             statisticsResponseDtoList.add(StatisticsResponseDto.builder()
                     .time(dateTime.getKey())
                     .count(dateCount == null ? 0 : dateCount)

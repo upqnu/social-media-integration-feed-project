@@ -9,6 +9,5 @@ import java.util.Map;
 
 public interface StatisticsRepositoryCustom {
 
-    // 날짜별로 Like_Count의 합계를 반환함
     List<StatisticsResponseDto> getStatistics(String hashtag, Map<LocalDateTime, LocalDateTime> dateTimeMap, String value);
 }
