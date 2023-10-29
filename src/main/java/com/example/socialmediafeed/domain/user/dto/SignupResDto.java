@@ -9,12 +9,14 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class SignupResDto {
     private long id;
+    private String username;
     private String email;
     private String hashtag;
 
     public static SignupResDto from(User user) {
         return new SignupResDto(
                 user.getId(),
+                user.getUsername(),
                 user.getEmail(),
                 user.getHashtag().getName()
         );
