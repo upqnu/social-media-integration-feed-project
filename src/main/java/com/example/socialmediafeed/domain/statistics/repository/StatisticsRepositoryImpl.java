@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.example.socialmediafeed.domain.post.entity.QPost.post;
+import static com.example.socialmediafeed.domain.posthashtag.entity.QPostHashtag.postHashtag;
 
 @RequiredArgsConstructor
 public class StatisticsRepositoryImpl implements StatisticsRepositoryCustom {
@@ -29,6 +30,7 @@ public class StatisticsRepositoryImpl implements StatisticsRepositoryCustom {
                 dateCount = queryFactory
                         .select(post.viewCount.sum())
                         .from(post)
+                        .join(postHashtag).on(postHashtag.hashtag.name.eq(hashtag), post.id.eq(postHashtag.post.id))
                         .where(post.createdAt.between(dateTime.getKey(), dateTime.getValue()))
                         .fetchFirst();
             }
@@ -38,6 +40,7 @@ public class StatisticsRepositoryImpl implements StatisticsRepositoryCustom {
                 dateCount = queryFactory
                         .select(post.likeCount.sum())
                         .from(post)
+                        .join(postHashtag).on(postHashtag.hashtag.name.eq(hashtag), post.id.eq(postHashtag.post.id))
                         .where(post.createdAt.between(dateTime.getKey(), dateTime.getValue()))
                         .fetchFirst();
             }
@@ -47,6 +50,7 @@ public class StatisticsRepositoryImpl implements StatisticsRepositoryCustom {
                 dateCount = queryFactory
                         .select(post.shareCount.sum())
                         .from(post)
+                        .join(postHashtag).on(postHashtag.hashtag.name.eq(hashtag), post.id.eq(postHashtag.post.id))
                         .where(post.createdAt.between(dateTime.getKey(), dateTime.getValue()))
                         .fetchFirst();
             }
@@ -56,6 +60,7 @@ public class StatisticsRepositoryImpl implements StatisticsRepositoryCustom {
                 dateCount = Math.toIntExact(queryFactory
                         .select(post.count())
                         .from(post)
+                        .join(postHashtag).on(postHashtag.hashtag.name.eq(hashtag), post.id.eq(postHashtag.post.id))
                         .where(post.createdAt.between(dateTime.getKey(), dateTime.getValue()))
                         .fetchFirst());
             }
