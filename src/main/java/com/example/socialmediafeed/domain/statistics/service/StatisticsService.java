@@ -3,6 +3,8 @@ package com.example.socialmediafeed.domain.statistics.service;
 import com.example.socialmediafeed.domain.post.entity.Post;
 import com.example.socialmediafeed.domain.post.repository.PostRepository;
 import com.example.socialmediafeed.domain.statistics.dto.StatisticsResponseDto;
+import com.example.socialmediafeed.domain.statistics.repository.StatisticsRepository;
+import com.example.socialmediafeed.domain.statistics.repository.StatisticsRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import java.util.List;
 public class StatisticsService {
 
     private final PostRepository postRepository;
+    private final StatisticsRepository statisticsRepository;
 
     /**
      * 통계 결과를 반환하는 메서드
