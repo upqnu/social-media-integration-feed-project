@@ -5,6 +5,8 @@ import com.example.socialmediafeed.domain.post.repository.PostRepository;
 import com.example.socialmediafeed.domain.statistics.dto.StatisticsResponseDto;
 import com.example.socialmediafeed.domain.statistics.repository.StatisticsRepository;
 import com.example.socialmediafeed.domain.statistics.repository.StatisticsRepositoryCustom;
+import com.example.socialmediafeed.global.error.exception.BusinessException;
+import com.example.socialmediafeed.global.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +43,7 @@ public class StatisticsService {
 
     /**
      * 검색하는 시간 단위를 {시작: 끝} 형태로 반환
+     *
      * @param hashtag
      * @param start
      * @param end
@@ -51,7 +54,7 @@ public class StatisticsService {
         // todo : hashtag 기준 검색도 구현하기
 
         // == 날짜 목록 반환 == //
-        List<LocalDate> DateTimeList = getDatesBetweenTwoDates(start, end);
+        List<LocalDate> DateTimeList = getDatesBetweenTwoDates(start, end, type);
 
         // == 시작과 끝을 시간 단위로 반환 == //
         Map<LocalDateTime, LocalDateTime> dateTimeMap = new HashMap<>();
@@ -77,15 +80,21 @@ public class StatisticsService {
 
     /**
      * 날짜 구간(start, end)에 맞는 날짜 목록 반환
+     *
      * @param start
      * @param end
      * @return ["2023-10-25", "2023-10-26", "2023-10-27"]
      */
-    private static List<LocalDate> getDatesBetweenTwoDates(String start, String end) {
+    private static List<LocalDate> getDatesBetweenTwoDates(String start, String end, String type) {
         LocalDate startDateTime = start != null ? LocalDate.parse(start, DateTimeFormatter.ISO_DATE) : LocalDate.now().minusDays(7);
         LocalDate endDateTime = end != null ? LocalDate.parse(end, DateTimeFormatter.ISO_DATE) : LocalDate.now().atTime(LocalTime.MAX).toLocalDate();
         List<LocalDate> DateTimeList = startDateTime.datesUntil(endDateTime).collect(Collectors.toList());
         DateTimeList.add(endDateTime);
+
+        // 기간이 30일이 넘거나 7일이 넘으면 조회 불가능
+        if ((Objects.equals(type, "date") && DateTimeList.size() > 30) || (Objects.equals(type, "hour") && DateTimeList.size() > 7)) {
+            throw new BusinessException(ErrorCode.START_END_NOT_VALID);
+        }
         return DateTimeList;
     }
 
