@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
-import com.example.socialmediafeed.domain.HashtagSetup;
-import com.example.socialmediafeed.domain.UserSetup;
+import com.example.socialmediafeed.domain.setup.HashtagSetup;
+import com.example.socialmediafeed.domain.setup.UserSetup;
 
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
