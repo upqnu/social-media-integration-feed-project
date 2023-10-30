@@ -1,15 +1,16 @@
 package com.example.socialmediafeed.domain.user.controller;
 
 import com.example.socialmediafeed.IntegrationTest;
+import com.example.socialmediafeed.domain.setup.HashtagSetup;
+import com.example.socialmediafeed.domain.setup.UserSetup;
 import com.example.socialmediafeed.domain.user.dto.ApprovalReqDto;
+import com.example.socialmediafeed.domain.user.dto.SignInReqDto;
 import com.example.socialmediafeed.domain.user.dto.SignupReqDto;
 import com.example.socialmediafeed.domain.user.entitiy.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
-import com.example.socialmediafeed.domain.setup.HashtagSetup;
-import com.example.socialmediafeed.domain.setup.UserSetup;
 
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -24,20 +25,24 @@ class UserApiControllerTest extends IntegrationTest {
     @Autowired
     HashtagSetup hashtagSetup;
 
+    // -- sign up test
+
     @Test
     void sign_up_success() throws Exception {
         //given
+        String username = "test123";
         String email = "test@naver.com";
         String password = "1q2w3e4r!";
         String hashtag = "#test";
 
-        SignupReqDto request = SignupReqDto.of(email, password, hashtag);
+        SignupReqDto request = SignupReqDto.of(username, email, password, hashtag);
         //when
         getSignupResultAction(request)
         //then
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("id").exists())
+                .andExpect(jsonPath("username").value(username))
                 .andExpect(jsonPath("email").value(email))
                 .andExpect(jsonPath("hashtag").value(hashtag));
 
@@ -46,11 +51,12 @@ class UserApiControllerTest extends IntegrationTest {
     @Test
     void sign_up_email_valid() throws Exception {
         //given
+        String username = "test123";
         String email = "test#naver.com";
         String password = "1q2w3e4r!";
         String hashtag = "#test";
 
-        SignupReqDto request = SignupReqDto.of(email, password, hashtag);
+        SignupReqDto request = SignupReqDto.of(username, email, password, hashtag);
         //when
         getSignupResultAction(request)
         //then
@@ -61,11 +67,12 @@ class UserApiControllerTest extends IntegrationTest {
     @Test
     void sign_up_only_integer_valid() throws Exception {
         //given
+        String username = "test123";
         String email = "test#naver.com";
         String password = "1234567890";
         String hashtag = "#test";
 
-        SignupReqDto request = SignupReqDto.of(email, password, hashtag);
+        SignupReqDto request = SignupReqDto.of(username, email, password, hashtag);
         //when
         getSignupResultAction(request)
                 //then
@@ -76,11 +83,60 @@ class UserApiControllerTest extends IntegrationTest {
     @Test
     void sign_up_length_valid() throws Exception {
         //given
+        String username = "test123";
         String email = "test#naver.com";
         String password = "1q2w3e";
         String hashtag = "#test";
 
-        SignupReqDto request = SignupReqDto.of(email, password, hashtag);
+        SignupReqDto request = SignupReqDto.of(username, email, password, hashtag);
+        //when
+        getSignupResultAction(request)
+                //then
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void sign_up_username_blank_valid() throws Exception {
+        //given
+        String username = "  ";
+        String email = "test#naver.com";
+        String password = "1234567890";
+        String hashtag = "#test";
+
+        SignupReqDto request = SignupReqDto.of(username, email, password, hashtag);
+        //when
+        getSignupResultAction(request)
+                //then
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void sign_up_username_length_valid() throws Exception {
+        //given
+        String username = "abcde";
+        String email = "test#naver.com";
+        String password = "1234567890";
+        String hashtag = "#test";
+
+        SignupReqDto request = SignupReqDto.of(username, email, password, hashtag);
+        //when
+        getSignupResultAction(request)
+                //then
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void sign_up_username_symbol_valid() throws Exception {
+        //given
+        String username = "!@#$%^&";
+        String email = "test#naver.com";
+        String password = "1234567890";
+        String hashtag = "#test";
+
+        SignupReqDto request = SignupReqDto.of(username, email, password, hashtag);
         //when
         getSignupResultAction(request)
                 //then
@@ -95,6 +151,66 @@ class UserApiControllerTest extends IntegrationTest {
                         .content(objectMapper.writeValueAsString(request))
         );
     }
+
+    // -- END sign up test
+
+    // -- sign in test
+
+    @Test
+    void sign_in_success() throws Exception {
+        // given
+        User user = userSetup.approvedBuild(hashtagSetup.build());
+
+        SignInReqDto reqDto = SignInReqDto.of(user.getUsername(), "1q2w3e4r!");
+        // when
+        mvc.perform(
+                post("/users/sign-in")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(reqDto))
+        )
+                // then
+                .andDo(print())
+                .andExpect(jsonPath("$.accessToken").isNotEmpty());
+    }
+
+    @Test
+    void sign_in_password_vaild() throws Exception  {
+        // given
+        User user = userSetup.approvedBuild(hashtagSetup.build());
+
+        SignInReqDto reqDto = SignInReqDto.of(user.getUsername(), "1q1q1q1q!");
+        // when
+        mvc.perform(
+                        post("/users/sign-in")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(reqDto))
+                )
+                // then
+                .andDo(print())
+                .andExpect(status().is5xxServerError());
+    }
+
+    @Test
+    void sign_in_approval_vaild() throws Exception {
+        // given
+        User user = userSetup.build(hashtagSetup.build());
+
+        SignInReqDto reqDto = SignInReqDto.of(user.getUsername(), "1q2w3e4r!");
+
+        // when
+        mvc.perform(
+                post("/users/sign-in")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(reqDto))
+        )
+                // then
+                .andDo(print())
+                .andExpect(status().is5xxServerError());
+    }
+
+    // -- END sign in test
+
+    // -- approval test
 
     @Test
     void approval_success() throws Exception {
@@ -112,5 +228,7 @@ class UserApiControllerTest extends IntegrationTest {
                 .andExpect(status().isNoContent());
 
     }
+
+    // -- END approval test
 
 }

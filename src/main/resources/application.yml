@@ -9,5 +9,7 @@ spring:
 
 jwt:
   header: Authorization
-  secret: x!A%D*G-KaPdSgVkYp3s5v8y/B?E(H+M
-  token-validity-in-seconds: 86400
+  secret: c29jaWFsLW1lZGlhLWludGVncmF0aW9uLWZlZWQtcHJvamVjdA==
+  expiration:
+    access: 86400
+    refresh: 864000

@@ -1,6 +1,8 @@
 package com.example.socialmediafeed.domain.user.controller;
 
+import com.example.socialmediafeed.domain.jwtoken.dto.CreateAccessTokenResDto;
 import com.example.socialmediafeed.domain.user.dto.ApprovalReqDto;
+import com.example.socialmediafeed.domain.user.dto.SignInReqDto;
 import com.example.socialmediafeed.domain.user.dto.SignupReqDto;
 import com.example.socialmediafeed.domain.user.dto.SignupResDto;
 import com.example.socialmediafeed.domain.user.service.UserApprovalService;
@@ -23,23 +25,32 @@ public class UserApiController {
 
 
     @PostMapping("/sign-up")
-    public ResponseEntity<SignupResDto> signUp(@RequestBody
-                                         @Valid
-                                         SignupReqDto signupReqDto) {
+    public ResponseEntity<SignupResDto> signUp(
+            @RequestBody
+            @Valid
+            SignupReqDto signupReqDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userSignupService.signUp(signupReqDto));
     }
 
+    /**
+     * 로그인 성공시 access token 반환
+     * @param signInReqDto username, password
+     * @return accessToken
+    * */
     @PostMapping("/sign-in")
-    public ResponseEntity<Object> signIn() {
-        return ResponseEntity.status(HttpStatus.OK).build();
+    public ResponseEntity<CreateAccessTokenResDto> signIn(
+            @RequestBody
+            @Valid SignInReqDto signInReqDto) {
+        return ResponseEntity.ok(userSignInService.signIn(signInReqDto));
     }
 
     @PatchMapping("/{id}/approval")
-    public ResponseEntity<Object> approval(@PathVariable(name = "id")
-                                           Long id,
-                                           @RequestBody
-                                           @Valid
-                                           ApprovalReqDto approvalReqDto) {
+    public ResponseEntity<Object> approval(
+            @PathVariable(name = "id")
+            Long id,
+            @RequestBody
+            @Valid
+            ApprovalReqDto approvalReqDto) {
         userApprovalService.approve(id, approvalReqDto);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
