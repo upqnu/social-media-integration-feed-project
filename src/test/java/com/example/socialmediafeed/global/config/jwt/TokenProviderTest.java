@@ -73,7 +73,7 @@ class TokenProviderTest extends IntegrationTest {
         String username = "testuser";
         String testToken = JwtFactory.builder()
                 .subject(username)
-                .claims(Map.of("auth", Authority.ROLE_MEMBER))
+                .claims(Map.of(TokenProvider.AUTHORITIES_KEY, Authority.ROLE_MEMBER))
                 .build()
                 .createToken(secret);
         // when

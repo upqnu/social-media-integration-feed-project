@@ -22,7 +22,7 @@ import java.util.Set;
 @Component
 public class TokenProvider implements InitializingBean {
 
-    private static final String AUTHORITIES_KEY = "auth";
+    public static final String AUTHORITIES_KEY = "auth";
     private final String SECRET;
     // access token 유효시간 (millisecond)
     private final long ACCESS_TOKEN_DURATION_MS;
