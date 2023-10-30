@@ -1,24 +1,20 @@
 package com.example.socialmediafeed.global.config.jwt;
 
 import com.example.socialmediafeed.IntegrationTest;
-import com.example.socialmediafeed.domain.HashtagSetup;
-import com.example.socialmediafeed.domain.UserSetup;
+import com.example.socialmediafeed.domain.setup.HashtagSetup;
+import com.example.socialmediafeed.domain.setup.UserSetup;
 import com.example.socialmediafeed.domain.user.entitiy.Authority;
 import com.example.socialmediafeed.domain.user.entitiy.User;
-import com.example.socialmediafeed.domain.user.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 class TokenProviderTest extends IntegrationTest {
 

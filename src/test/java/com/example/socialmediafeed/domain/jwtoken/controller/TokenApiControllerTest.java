@@ -1,13 +1,12 @@
 package com.example.socialmediafeed.domain.jwtoken.controller;
 
 import com.example.socialmediafeed.IntegrationTest;
-import com.example.socialmediafeed.domain.HashtagSetup;
-import com.example.socialmediafeed.domain.UserSetup;
 import com.example.socialmediafeed.domain.jwtoken.dto.CreateAccessTokenReqDto;
 import com.example.socialmediafeed.domain.jwtoken.entity.RefreshToken;
 import com.example.socialmediafeed.domain.jwtoken.repository.RefreshTokenRepository;
+import com.example.socialmediafeed.domain.setup.HashtagSetup;
+import com.example.socialmediafeed.domain.setup.UserSetup;
 import com.example.socialmediafeed.domain.user.entitiy.User;
-import com.example.socialmediafeed.domain.user.repository.UserRepository;
 import com.example.socialmediafeed.global.config.jwt.JwtFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
