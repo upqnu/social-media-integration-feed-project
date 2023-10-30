@@ -10,7 +10,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class PostService {
+public class DummyDataService {
 
     private final PostRepository postRepository;
 

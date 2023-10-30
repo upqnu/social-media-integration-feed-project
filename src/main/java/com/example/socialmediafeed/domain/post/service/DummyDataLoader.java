@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class DummyDataLoader implements ApplicationRunner {
 
-    private final PostService postService;
+    private final DummyDataService dummyDataService;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        postService.createDummyPosts();
+        dummyDataService.createDummyPosts();
     }
 }

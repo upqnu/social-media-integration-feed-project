@@ -1,4 +1,4 @@
-package com.example.socialmediafeed.domain;
+package com.example.socialmediafeed.domain.setup;
 
 import com.example.socialmediafeed.domain.hashtag.entity.Hashtag;
 import com.example.socialmediafeed.domain.user.entitiy.User;
