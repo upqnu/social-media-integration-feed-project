@@ -30,12 +30,6 @@ public class PostController {
     ) {
         Page<Post> postsList = postService.getPosts(hashtag, page, page_count, sortBy, sortOrder);
 
-        if (postsList.isEmpty()) {
-            return ResponseEntity
-                    .status(HttpStatus.NO_CONTENT)
-                    .body(postsList);
-        }
-
         return ResponseEntity.ok(postsList);
     }
 
