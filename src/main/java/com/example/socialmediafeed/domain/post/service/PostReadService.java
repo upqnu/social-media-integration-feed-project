@@ -64,7 +64,6 @@ public class PostReadService {
                 .orElseThrow(() -> new EntityNotFoundException("게시물을 찾을 수 없습니다."));
 
         post.incrementViewCount();
-        Post updatedPost = postRepository.save(post);
-        return updatedPost;
+        return post;
     }
 }

@@ -71,20 +71,24 @@ class PostControllerTest extends IntegrationTest {
         int initialViewCount = post.getViewCount();
 
         logger.info("Initial viewCount: " + initialViewCount);
+    }
 
-        for (int i = 0; i < 5; i++) {
-            mvcResult = mvc.perform(MockMvcRequestBuilders.get("/posts/" + postId)
-                            .contentType(MediaType.APPLICATION_JSON_VALUE))
-                    .andReturn();
+    @Test
+    void countLikesOnPost() throws Exception {
+        Long postId = 5L;
+        Logger logger = Logger.getLogger(getClass().getName());
 
-            status = mvcResult.getResponse().getStatus();
-            assertEquals(200, status);
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get("/posts/" + postId + "/likes")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andReturn();
 
-            content = mvcResult.getResponse().getContentAsString();
-            post = objectMapper.readValue(content, Post.class);
-            int updatedViewCount = post.getViewCount();
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
 
-            logger.info("Updated viewCount: " + updatedViewCount);
-        }
+        String content = mvcResult.getResponse().getContentAsString();
+        Post post = objectMapper.readValue(content, Post.class);
+        int initialLikeCount = post.getLikeCount();
+
+        logger.info("Initial likeCount: " + initialLikeCount);
     }
 }

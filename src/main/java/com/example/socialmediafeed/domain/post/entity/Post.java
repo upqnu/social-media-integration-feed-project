@@ -71,4 +71,8 @@ public class Post {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
+    public void incrementLikeCount() {
+        this.likeCount++;
+    }
 }
