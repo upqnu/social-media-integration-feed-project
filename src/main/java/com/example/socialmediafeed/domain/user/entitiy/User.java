@@ -18,7 +18,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email", unique = true)
+    @Column(name = "username", columnDefinition = "varchar(255) comment '사용자 아이디'", unique = true)
+    private String username;
+
+    @Column(name = "email", nullable = false)
     private String email;
 
     @Column(name = "password", length = 500, nullable = false)
@@ -30,19 +33,25 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private IsActive isActive;
 
+    @Enumerated(value = EnumType.STRING)
+    private Authority authority;
+
     @OneToOne
     @JoinColumn(name = "hashtag_id", unique = true)
     private Hashtag hashtag;
 
     @Builder
-    public User(String email,
+    public User(String username,
+                String email,
                 String password,
                 String certificationNumber,
                 Hashtag hashtag) {
+        this.username = username;
         this.email = email;
         this.password = password;
         this.certificationNumber = certificationNumber;
         this.isActive = IsActive.DISABLED;
+        this.authority = Authority.ROLE_MEMBER;
         this.hashtag = hashtag;
     }
 
