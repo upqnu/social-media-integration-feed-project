@@ -1,6 +1,7 @@
 package com.example.socialmediafeed.domain.post.controller;
 
 import com.example.socialmediafeed.domain.post.entity.Post;
+import com.example.socialmediafeed.domain.post.service.PostInteractionService;
 import com.example.socialmediafeed.domain.post.service.PostReadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostController {
 
     private final PostReadService postReadService;
+    private final PostInteractionService postInteractionService;
 
     @GetMapping("")
     public ResponseEntity<Page<Post>> getPosts(
@@ -37,4 +39,9 @@ public class PostController {
         return ResponseEntity.ok(post);
     }
 
+    @GetMapping("/{postId}/likes")
+    public ResponseEntity<?> likePost(@PathVariable Long postId) {
+        postInteractionService.likePost(postId);
+        return ResponseEntity.ok().build();
+    }
 }
