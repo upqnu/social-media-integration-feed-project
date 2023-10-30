@@ -31,7 +31,10 @@ def queryDslVersion = '5.0.0'
 dependencies {
     implementation 'org.apache.commons:commons-lang3'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-
+    // SMTP
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    // Mustache template
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-hateoas'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
