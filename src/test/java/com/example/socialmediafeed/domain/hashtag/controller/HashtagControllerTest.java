@@ -45,8 +45,8 @@ class HashtagControllerTest extends IntegrationTest {
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("hashtagName").value(firstHashtag.getName()))
-                .andExpect(jsonPath("count").value(2L));
+                .andExpect(jsonPath("hashtagName").value("행복해"))
+                .andExpect(jsonPath("count").value(5L));
 
     }
 }
