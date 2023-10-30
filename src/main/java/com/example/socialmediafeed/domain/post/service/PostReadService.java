@@ -9,11 +9,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +19,7 @@ import static com.example.socialmediafeed.domain.post.entity.QPost.post;
 
 @RequiredArgsConstructor
 @Service
-public class PostService {
+public class PostReadService {
 
     private final EntityManager entityManager;
     private final PostRepository postRepository;
@@ -53,11 +50,21 @@ public class PostService {
         int endIndex = Math.min((startIndex + pageable.getPageSize()), results.size());
 
         if (startIndex > results.size() || startIndex < 0) {
-            // Handle the case where startIndex is out of bounds
             return new PageImpl<>(Collections.emptyList(), pageable, 0);
         }
 
         Page<Post> pageResults = new PageImpl<>(results.subList(startIndex, endIndex), pageable, results.size());
 
         return pageResults;
+    }
+
+    @Transactional
+    public Post getPostById(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new EntityNotFoundException("게시물을 찾을 수 없습니다."));
+
+        post.incrementViewCount();
+        Post updatedPost = postRepository.save(post);
+        return updatedPost;
+    }
 }

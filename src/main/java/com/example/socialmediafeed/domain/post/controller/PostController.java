@@ -1,16 +1,14 @@
 package com.example.socialmediafeed.domain.post.controller;
 
 import com.example.socialmediafeed.domain.post.entity.Post;
-import com.example.socialmediafeed.domain.post.service.PostService;
+import com.example.socialmediafeed.domain.post.service.PostReadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -18,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class PostController {
 
-    private final PostService postService;
+    private final PostReadService postReadService;
 
     @GetMapping("")
     public ResponseEntity<Page<Post>> getPosts(
@@ -28,9 +26,15 @@ public class PostController {
             @RequestParam(defaultValue = "createdAt") String sortBy,
             @RequestParam(defaultValue = "desc") String sortOrder
     ) {
-        Page<Post> postsList = postService.getPosts(hashtag, page, page_count, sortBy, sortOrder);
+        Page<Post> postsList = postReadService.getPosts(hashtag, page, page_count, sortBy, sortOrder);
 
         return ResponseEntity.ok(postsList);
+    }
+
+    @GetMapping("/{postId}")
+    public ResponseEntity<Post> getPost(@PathVariable Long postId) {
+        Post post = postReadService.getPostById(postId);
+        return ResponseEntity.ok(post);
     }
 
 }
