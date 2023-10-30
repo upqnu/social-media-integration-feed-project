@@ -5,10 +5,10 @@ import com.example.socialmediafeed.domain.jwtoken.dto.CreateAccessTokenResDto;
 import com.example.socialmediafeed.domain.jwtoken.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,5 +23,12 @@ public class TokenApiController {
         String newAccessToken = tokenService.createNewAccessTokenUsingRefreshToken(request.getRefreshToken());
 
         return ResponseEntity.ok(CreateAccessTokenResDto.of(newAccessToken));
+    }
+
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> requireAdminPermission(@AuthenticationPrincipal User user) {
+        System.out.println(user.getUsername() + ", " + user.getAuthorities());
+        return ResponseEntity.ok("adminPermission");
     }
 }
