@@ -13,5 +13,5 @@ import java.time.LocalDateTime;
 public class StatisticsResponseDto {
 
     public LocalDateTime time;
-    public int count;
+    public Integer count;
 }
