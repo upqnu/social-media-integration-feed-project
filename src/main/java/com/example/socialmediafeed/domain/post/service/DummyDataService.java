@@ -9,12 +9,14 @@ import com.example.socialmediafeed.domain.posthashtag.entity.PostHashtag;
 import com.example.socialmediafeed.domain.posthashtag.repository.PostHashtagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class DummyDataService {
 
     private final PostRepository postRepository;
@@ -25,7 +27,7 @@ public class DummyDataService {
         createDummies();
     }
 
-    private List<Post> createDummies() {
+    private void createDummies() {
 
         Post postFBa = Post.builder()
                 .contentId("fb1")
@@ -270,14 +272,13 @@ public class DummyDataService {
         hashtagRepository.saveAll(List.of(
                 hashtag1, hashtag2
         ));
-
+        postRepository.saveAll(List.of(
+                postFBa, postFBb, postFBc, postFBd, postFBe, postTWa, postTWb, postTWc, postTWd, postTWe,
+                postIGa, postIGb, postIGc, postIGd, postIGe, postTHa, postTHb, postTHc, postTHd, postTHe
+        ));
         postHashtagRepository.saveAll(List.of(
                 postHashtag1, postHashtag2, postHashtag3, postHashtag4, postHashtag5, postHashtag6, postHashtag7, postHashtag8
         ));
 
-        return postRepository.saveAll(List.of(
-                postFBa, postFBb, postFBc, postFBd, postFBe, postTWa, postTWb, postTWc, postTWd, postTWe,
-                postIGa, postIGb, postIGc, postIGd, postIGe, postTHa, postTHb, postTHc, postTHd, postTHe
-        ));
     }
 }
