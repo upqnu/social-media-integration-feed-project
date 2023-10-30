@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -26,6 +27,7 @@ public class PostService {
     private final EntityManager entityManager;
     private final PostRepository postRepository;
 
+    @Transactional
     public Page<Post> getPosts(String hashtag, int page, int page_count, String sortBy, String sortOrder) {
 
         QPost qPost = post;
