@@ -44,4 +44,10 @@ public class PostController {
         postInteractionService.likePost(postId);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/{postId}/shares")
+    public ResponseEntity<?> sharePost(@PathVariable Long postId) {
+        postInteractionService.sharePost(postId);
+        return ResponseEntity.ok().build();
+    }
 }
