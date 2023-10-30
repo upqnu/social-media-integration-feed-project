@@ -20,19 +20,21 @@ public class UserSignupService {
 
     private final HashtagRepoForUser hashtagRepoForUser;
     private final UserRepository userRepository;
+    private final EmailService emailService;
     private final PasswordEncoder encoder;
 
     @Transactional
     public SignupResDto signUp(SignupReqDto signupReqDto) {
-        //SignupReqDto 검증
+        // SignupReqDto 검증
         validate(signupReqDto);
 
-        //5자의 무작위 번호 생성 및 중복 검사: 문자, 숫자 포함
+        // 5자의 무작위 번호 생성 및 중복 검사: 문자, 숫자 포함
         String randomNumber = generateNotUsedRandomNumber();
 
-        //todo: 이메일 인증 메일 발송
+        // 이메일 인증 메일 발송
+        emailService.sendAsyncMail(signupReqDto.getEmail(), randomNumber);
 
-        //DB에 해당 정보 저장
+        // DB에 해당 정보 저장
         Hashtag hashtag = hashtagRepoForUser.save(signupReqDto.toHashtagEntity());
         return SignupResDto.from(userRepository.save(signupReqDto.toEntity(encoder, randomNumber, hashtag)));
     }
