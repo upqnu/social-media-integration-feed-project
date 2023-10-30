@@ -75,4 +75,8 @@ public class Post {
     public void incrementLikeCount() {
         this.likeCount++;
     }
+
+    public void incrementShareCount() {
+        this.shareCount++;
+    }
 }

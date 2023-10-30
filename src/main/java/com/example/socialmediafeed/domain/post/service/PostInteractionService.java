@@ -23,4 +23,15 @@ public class PostInteractionService {
 
         snsFeedService.searchSns();
     }
+
+    @Transactional
+    public void sharePost(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new EntityNotFoundException("게시물을 찾을 수 없습니다."));
+
+        post.incrementShareCount();
+
+        snsFeedService.searchSns();
+    }
+
 }

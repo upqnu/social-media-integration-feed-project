@@ -91,4 +91,23 @@ class PostControllerTest extends IntegrationTest {
 
         logger.info("Initial likeCount: " + initialLikeCount);
     }
+
+    @Test
+    void countSharesOnPost() throws Exception {
+        Long postId = 10L;
+        Logger logger = Logger.getLogger(getClass().getName());
+
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get("/posts/" + postId + "/shares")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+
+        String content = mvcResult.getResponse().getContentAsString();
+        Post post = objectMapper.readValue(content, Post.class);
+        int initialShareCount = post.getShareCount();
+
+        logger.info("Initial shareCount: " + initialShareCount);
+    }
 }
