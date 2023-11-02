@@ -1,4 +1,4 @@
-![logo](https://static.wanted.co.kr/images/events/3178/58ac3248.jpg)
+![logo](src/main/resources/static/img/logo.jpg)
 
 # 소셜 미디어 통합 Feed 서비스 MOA
 **소셜 미디어 Feed 여기 다 MOA!**
@@ -51,43 +51,54 @@ To run tests, run the following command
 ```javascript
   GET /users/sign-up
 ```
+```http
+Content-Type: application/json
 
+{
+  "username":"test1234",
+  "email":"yoojinlee.dev@gmail.com",
+  "password":"1q2w3e4r!",
+  "hashtag":"test"
+}
+```
 #### Response
 ```http
-    HTTP/1.1 201
-    Content-Type: application/json
+HTTP/1.1 201
+Content-Type: application/json
 
-    {
-        "id": 1,
-        "email": "test@test.com",
-        "hashtag": "#test"
-    }
+{
+  "id": 1,
+  "username": "test1234",
+  "email": "yoojinlee.dev@gmail.com",
+  "hashtag": "test"
+}
 ```
 </details>
+
 <details>
 <summary>로그인 - click</summary>
 
 #### Request
 ```javascript
-  GET /api/items
+  GET /users/sign-in
 ```
+```http
+Content-Type: application/json
 
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `api_key` | `string` | **Required**. Your API key |
+{
+    "username": "tester1234",
+    "password": "1q2w3e4r!",
+}
+```
 
 #### Response
 ```http
     HTTP/1.1 200
     Content-Type: application/json
 
-    [{
-        "id": 10,
-        "name": "shirt",
-        "color": "red",
-        "price": "$23"
-    },...
-    ]
+{
+    "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIzNCIsImV4cCI6MTY5ODc3MjE5OSwiaWF0IjoxNjk4Njg1Nzk5LCJlbWFpbCI6Inlvb2ppbmxlZS5kZXZAZ21haWwuY29tIiwidXNlcklkIjoxLCJhdXRoIjoiUk9MRV9NRU1CRVIifQ.EFjPkcgIjepNwh0qel9H9ZQMbcJ2dZ-fBl9sRuUG5tU"
+}
 ```
 </details>
 <details>
@@ -98,9 +109,9 @@ To run tests, run the following command
   GET /users/{id}/approval
 ```
 
-| Parameter | Type   | Description             |
-|:----------|:-------|:------------------------|
-| `id`      | `Long` | **Required**. User's ID |
+| Path | Type   | Description             |
+|:-----|:-------|:------------------------|
+| `id` | `Long` | **Required**. User's ID |
 
 #### Response
 ```http
@@ -110,6 +121,142 @@ To run tests, run the following command
 </details>
 
 ### Post
+<details>
+<summary> 게시물 불러오기 - click</summary>
+
+#### Request
+```javascript
+  GET /posts
+```
+
+| Parameter    | Type     | Description                                |
+|:-------------|:---------|:-------------------------------------------|
+| `hashtag`    | `String` |                                            |
+| `page`       | `int`    |                |
+| `page_count` | `int`    |  |
+| `createdAt`  | `String` |  |
+| `desc`       | `String` |  |
+
+
+#### Response
+```http
+    HTTP/1.1 200
+    Content-Type: application/json
+    
+    {
+    "content": [
+        {
+            "id": 1,
+            "contentId": "fb1",
+            "type": "FACEBOOK",
+            "title": "페북 피드_1",
+            "content": "good #dev #java",
+            "viewCount": 2,
+            "likeCount": 0,
+            "shareCount": 3,
+            "createdAt": "2023-10-31T02:00:30.682465",
+            "updatedAt": "2023-10-31T02:00:30.682465"
+        },
+        //...
+    ],
+    "pageable": {
+        "pageNumber": 0,
+        "pageSize": 5,
+        "sort": {
+            "empty": false,
+            "sorted": true,
+            "unsorted": false
+        },
+        "offset": 0,
+        "unpaged": false,
+        "paged": true
+    },
+    "last": false,
+    "totalElements": 20,
+    "totalPages": 4,
+    "size": 5,
+    "number": 0,
+    "sort": {
+        "empty": false,
+        "sorted": true,
+        "unsorted": false
+    },
+    "first": true,
+    "numberOfElements": 5,
+    "empty": false
+}
+```
+</details>
+
+<details>
+<summary> 게시물 상세 - click</summary>
+
+#### Request
+```javascript
+  GET /posts/{postId}
+```
+
+| Path | Type   | Description             |
+|:-----|:-------|:------------------------|
+| `id` | `Long` | **Required**. User's ID |
+
+#### Response
+```http
+HTTP/1.1 200
+Content-Type: application/json
+
+{
+  "id": 0,
+  "contentId": "string",
+  "type": "FACEBOOK",
+  "title": "string",
+  "content": "string",
+  "viewCount": 0,
+  "likeCount": 0,
+  "shareCount": 0,
+  "createdAt": "2023-11-02T03:02:34.687Z",
+  "updatedAt": "2023-11-02T03:02:34.687Z"
+}
+```
+</details>
+
+<details>
+<summary> 게시물 좋아요 - click</summary>
+
+#### Request
+```javascript
+  GET /posts/{postId}/likes
+```
+
+| Path | Type   | Description             |
+|:-----|:-------|:------------------------|
+| `id` | `Long` | **Required**. User's ID |
+
+#### Response
+```http
+    HTTP/1.1 200
+    Content-Type: application/json
+```
+</details>
+
+<details>
+<summary> 게시물 공유 - click</summary>
+
+#### Request
+```javascript
+  GET /posts/{postId}/shares
+```
+
+| Path | Type   | Description             |
+|:-----|:-------|:------------------------|
+| `id` | `Long` | **Required**. User's ID |
+
+#### Response
+```http
+    HTTP/1.1 200
+    Content-Type: application/json
+```
+</details>
 
 ### Hashtag
 <details>
@@ -132,31 +279,62 @@ To run tests, run the following command
 ```
 </details>
 
+### Statisitcs
+<details>
+<summary>통계 - click</summary>
+
+#### Request
+```javascript
+  GET /statistics
+```
+| Parameter  | Type      | Description                                |
+|:-----------|:----------|:-------------------------------------------|
+| `hashtag`  | `String`  |                                            |
+| `type`     | `String`  | **Required**.`date`, `hour`                |
+| `start`    | `date`    | 2023-10-01 과 같이 데이트 형식이며 조회 기준 시작일을 의미합니다. |
+| `end`      | `date`    | 2023-10-25 과 같이 데이트 형식이며 조회 기준 시작일을 의미합니다. |
+| `value`    | `String`  | count, view_count, like_count, share_count |
+
+#### Response
+```http
+    HTTP/1.1 200
+    Content-Type: application/json
+
+    {
+        "time": "#test",
+        "count": 15
+    }
+```
+</details>
+
 ## 프로젝트 진행 및 이슈 관리
 [![Github Project](https://img.shields.io/badge/Github-%23000000.svg?style=for-the-badge&logo=Github&logoColor=white)](https://github.com/orgs/Team-Enigma23/projects/2)
 
 ## 구현과정(설계 및 의도)
 ![coverage](src/main/resources/static/img/table.png) <br/>
-(노션, 블로그 등의 페이지로 안내 가능)
+사용자는 자신의 해시태그를 등록하고, 해당 해시태그를 기반으로 게시물을 조회할 수 있습니다.
+
 <details>
-<summary>작성 중..</summary>
-
-- 의존성 문제
-    1. Press `Ctrl` + `f` on your keyboard, to bring out the search modal.
-    2. Enter the name of the badge you need.
-    3. Copy the appropriate `![Name](link)` element and paste it in your Markdown file (e.g. README.md)
-- 00가 00 하는 문제
-
+<summary>JWT 유저인증</summary>
+- JWT를 활용한 유저 인증을 구현했습니다.<br>
+- SMTP를 활용해 유저의 이메일에 유저의 인증키를 전송하는 기능을 구현했습니다.
 </details>
-
+<details>
+<summary>게시물 확인</summary>
+- 게시물 확인 및 상세, 좋아요, 공유 기능을 구현했습니다.
+</details>
+<details>
+<summary>통계</summary>
+- 유저, 또는 브랜드 해시태그의 통계를 확인할 수 있습니다.<br>
+</details>
+<details>
+<summary>HOT Hashtag</summary>
+- 최근 3시간 이내에 게시물에서 가장 많이 사용된 해시태그를 조회할 수 있습니다.<br>
+</details>
 <details>
 <summary>RESTful API 설계 - click</summary>
-
-- 의존성 문제
-    1. Press `Ctrl` + `f` on your keyboard, to bring out the search modal.
-    2. Enter the name of the badge you need.
-    3. Copy the appropriate `![Name](link)` element and paste it in your Markdown file (e.g. README.md)
-- 00가 00 하는 문제
+- Open API를 활용한 Self-descriptive Message 충족<br>
+  - "/swagger-ui"에서 해당 내용 확인 가능
 
 </details>
 
@@ -165,7 +343,7 @@ To run tests, run the following command
 - [Security 3.0에서 주의할 점](https://diligent-mangosteen-06d.notion.site/Security-3-0-3a70cd637c3a472dbfefe4faadd793ca?pvs=4)
 - [jjwt 0.9와 jjwt 0.10 이상 버전 차이](https://chickencoc.tistory.com/21)
 - [QueryDsl](https://gabang2.notion.site/QueryDsl-43b0901997104bb89c96bcc4d9da78ed)
-
+- [GitHub에서 Pull Request의 Merge 종류 차이](https://chickencoc.tistory.com/26)
 ## Authors
 - [U-jinLee](https://github.com/U-jinLee)
 - [upqnu](https://github.com/upqnu)
