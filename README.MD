@@ -1,8 +1,6 @@
 ![logo](src/main/resources/static/img/logo.jpg)
 
 # 소셜 미디어 통합 Feed 서비스 MOA
-**소셜 미디어 Feed 여기 다 MOA!**
-
 ## Table of Contents
 - [개요](#개요)
 - [Skils](#skils)
@@ -15,7 +13,7 @@
 - [Authors](#authors)
 
 ## 개요
-본 서비스는 유저 계정의 해시태그(”#dani”) 를 기반으로 `인스타그램`, `스레드`, `페이스북`, `트위터` 등 복수의 SNS에 게시된 게시물 중 유저의 해시태그가 포함된 게시물들을 하나의 서비스에서 확인할 수 있는 통합 Feed 어플리케이션 입니다. <br/>
+**소셜 미디어 Feed 여기 다 MOA!** 본 서비스는 유저 계정의 해시태그(”#dani”) 를 기반으로 `인스타그램`, `스레드`, `페이스북`, `트위터` 등 복수의 SNS에 게시된 게시물 중 유저의 해시태그가 포함된 게시물들을 하나의 서비스에서 확인할 수 있는 통합 Feed 어플리케이션 입니다. <br/>
 
 ## Skils
 언어 및 프레임워크: ![Static Badge](https://img.shields.io/badge/Java-17-Green) ![Static Badge](https://img.shields.io/badge/Spring_boot-REST-Green)<br/>
@@ -309,6 +307,9 @@ Content-Type: application/json
 
 ## 프로젝트 진행 및 이슈 관리
 [![Github Project](https://img.shields.io/badge/Github-%23000000.svg?style=for-the-badge&logo=Github&logoColor=white)](https://github.com/orgs/Team-Enigma23/projects/2)
+### 이슈관리
+프로젝트 진행 중 배움에 관한 정리
+- [SMTP Email 사용 속도 개선](https://diligent-mangosteen-06d.notion.site/SMTP-Email-57124080d4cb4e3383a014df0af2c95f?pvs=4)
 
 ## 구현과정(설계 및 의도)
 ![coverage](src/main/resources/static/img/table.png) <br/>
