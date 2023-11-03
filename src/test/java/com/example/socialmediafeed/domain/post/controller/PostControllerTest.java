@@ -2,8 +2,11 @@ package com.example.socialmediafeed.domain.post.controller;
 
 import com.example.socialmediafeed.IntegrationTest;
 import com.example.socialmediafeed.domain.post.entity.Post;
+import com.example.socialmediafeed.domain.post.repository.PostRepository;
+import com.example.socialmediafeed.domain.setup.PostSetup;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -11,9 +14,17 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class PostControllerTest extends IntegrationTest {
+
+    @Autowired
+    PostSetup postSetup;
+    @Autowired
+    PostRepository postRepository;
 
     @Test
     public void testTotalPostsCount() throws Exception {
@@ -74,22 +85,20 @@ class PostControllerTest extends IntegrationTest {
     }
 
     @Test
-    void countLikesOnPost() throws Exception {
-        Long postId = 5L;
-        Logger logger = Logger.getLogger(getClass().getName());
-
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get("/posts/" + postId + "/likes")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        assertEquals(200, status);
-
-        String content = mvcResult.getResponse().getContentAsString();
-        Post post = objectMapper.readValue(content, Post.class);
-        int initialLikeCount = post.getLikeCount();
-
-        logger.info("Initial likeCount: " + initialLikeCount);
+    void post_like_count_plus_success() throws Exception {
+        //given
+        Post post = postSetup.build();
+        assertEquals(post.getLikeCount(), 0);
+        //when
+        //then
+        mvc.perform(
+                get("/posts/{id}/likes", post.getId())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                )
+                .andDo(print())
+                .andExpect(status().isOk());
+        post = postRepository.findById(post.getId()).get();
+        assertEquals(post.getLikeCount(), 1);
     }
 
     @Test
