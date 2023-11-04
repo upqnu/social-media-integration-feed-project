@@ -27,7 +27,7 @@ class PostControllerTest extends IntegrationTest {
     PostRepository postRepository;
 
     @Test
-    public void testTotalPostsCount() throws Exception {
+    void testTotalPostsCount() throws Exception {
         String uri = "/posts";
 
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
@@ -44,7 +44,7 @@ class PostControllerTest extends IntegrationTest {
     }
 
     @Test
-    public void testGetPosts() throws Exception {
+    void testGetPosts() throws Exception {
 
         String uri = "/posts";
 
@@ -66,7 +66,7 @@ class PostControllerTest extends IntegrationTest {
     }
 
     @Test
-    public void testGetPostById() throws Exception {
+    void testGetPostById() throws Exception {
         Long postId = 20L;
         Logger logger = Logger.getLogger(getClass().getName());
 
@@ -88,8 +88,9 @@ class PostControllerTest extends IntegrationTest {
     void post_like_count_plus_success() throws Exception {
         //given
         Post post = postSetup.build();
-        assertEquals(post.getLikeCount(), 0);
+        assertEquals(0, post.getLikeCount());
         //when
+
         //then
         mvc.perform(
                 get("/posts/{id}/likes", post.getId())
@@ -98,25 +99,25 @@ class PostControllerTest extends IntegrationTest {
                 .andDo(print())
                 .andExpect(status().isOk());
         post = postRepository.findById(post.getId()).get();
-        assertEquals(post.getLikeCount(), 1);
+        assertEquals(1, post.getLikeCount());
     }
 
     @Test
-    void countSharesOnPost() throws Exception {
-        Long postId = 10L;
-        Logger logger = Logger.getLogger(getClass().getName());
+    void post_share_count_plus_success() throws Exception {
+        //given
+        Post post = postSetup.build();
+        assertEquals(0, post.getLikeCount());
+        //when
 
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get("/posts/" + postId + "/shares")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        assertEquals(200, status);
-
-        String content = mvcResult.getResponse().getContentAsString();
-        Post post = objectMapper.readValue(content, Post.class);
-        int initialShareCount = post.getShareCount();
-
-        logger.info("Initial shareCount: " + initialShareCount);
+        //then
+        mvc.perform(
+                        get("/posts/{id}/shares", post.getId())
+                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                )
+                .andDo(print())
+                .andExpect(status().isOk());
+        post = postRepository.findById(post.getId()).get();
+        assertEquals(1, post.getShareCount());
     }
+
 }

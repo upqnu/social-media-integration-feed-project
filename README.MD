@@ -37,7 +37,7 @@ To run tests, run the following command
   ./gradlew test
 ```
 
-> Coverage ScreenShot ![Static Badge](https://img.shields.io/badge/Test_Passed-7/7-green)<br/>
+> Coverage ScreenShot ![Static Badge](https://img.shields.io/badge/Test_Passed-23/23-green)<br/>
 ![coverage](src/main/resources/static/img/test.png)
 
 ## API Reference
