@@ -26,7 +26,7 @@ public class UserApiController {
     private final UserSignInService userSignInService;
     private final UserApprovalService userApprovalService;
 
-    @Operation(summary = "사용자 회원가입", description = "사용자의 입력 정보를 받아 신규 사용자를 등록합니다.")
+    @Operation(summary = "사용자 회원가입", description = "사용자의 정보를 받아 신규 사용자를 등록합니다.")
     @PostMapping("/sign-up")
     public ResponseEntity<SignupResDto> signUp(@RequestBody @Valid SignupReqDto signupReqDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userSignupService.signUp(signupReqDto));

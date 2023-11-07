@@ -19,26 +19,22 @@
 언어 및 프레임워크: ![Static Badge](https://img.shields.io/badge/Java-17-Green) ![Static Badge](https://img.shields.io/badge/Spring_boot-REST-Green)<br/>
 데이터베이스 및 테스트: ![Static Badge](https://img.shields.io/badge/h2-2.1.214-blue) ![Static Badge](https://img.shields.io/badge/JUnit-Green) <br/>
 배포 : ![Static Badge](https://img.shields.io/badge/Gradle-039BC6) <br/>
+ETC: ![Static Badge](https://img.shields.io/badge/SMTP-039BC6)
 
 ## Installation
-
 Install MOA project with gradle
-
 ```bash
 ./gradlew bootjar
 ./gradlew bootrun
 ```
 
 ## Running Tests
-
 To run tests, run the following command
-
 ```bash
   ./gradlew test
 ```
-
-> Coverage ScreenShot ![Static Badge](https://img.shields.io/badge/Test_Passed-23/23-green)<br/>
-![coverage](src/main/resources/static/img/test.png)
+>![Static Badge](https://img.shields.io/badge/Test_Passed-23/23-green)<br/>
+> ![coverage](src/main/resources/static/img/test.png)
 
 ## API Reference
 ### User
@@ -306,30 +302,30 @@ Content-Type: application/json
 </details>
 
 ## 프로젝트 진행 및 이슈 관리
-[![Github Project](https://img.shields.io/badge/Github-%23000000.svg?style=for-the-badge&logo=Github&logoColor=white)](https://github.com/orgs/Team-Enigma23/projects/2)
-### 이슈관리
-프로젝트 진행 중 배움에 관한 정리
-- [SMTP Email 사용 속도 개선](https://diligent-mangosteen-06d.notion.site/SMTP-Email-57124080d4cb4e3383a014df0af2c95f?pvs=4)
+프로젝트의 Issue, PR 진행은 아래 버튼을 눌러 확인할 수 있습니다.
+<br>
+[![Github Project](https://img.shields.io/badge/Github-%23000000.svg?style=for-the-badge&logo=Github&logoColor=white)](https://github.com/Team-Enigma23/location-based-gourmet-recommendation-project)
+[![Github Project](https://img.shields.io/badge/Github_Repository-%23000000.svg?style=for-the-badge&logo=Github&logoColor=white)](https://github.com/orgs/Team-Enigma23/projects/2)
 
 ## 구현과정(설계 및 의도)
 ![coverage](src/main/resources/static/img/table.png) <br/>
 사용자는 자신의 해시태그를 등록하고, 해당 해시태그를 기반으로 게시물을 조회할 수 있습니다.
 
 <details>
-<summary>JWT 유저인증</summary>
+<summary>JWT 유저인증 - click</summary>
 - JWT를 활용한 유저 인증을 구현했습니다.<br>
 - SMTP를 활용해 유저의 이메일에 유저의 인증키를 전송하는 기능을 구현했습니다.
 </details>
 <details>
-<summary>게시물 확인</summary>
+<summary>게시물 확인 - click</summary>
 - 게시물 확인 및 상세, 좋아요, 공유 기능을 구현했습니다.
 </details>
 <details>
-<summary>통계</summary>
+<summary>통계 - click</summary>
 - 유저, 또는 브랜드 해시태그의 통계를 확인할 수 있습니다.<br>
 </details>
 <details>
-<summary>HOT Hashtag</summary>
+<summary>HOT Hashtag - click</summary>
 - 최근 3시간 이내에 게시물에서 가장 많이 사용된 해시태그를 조회할 수 있습니다.<br>
 </details>
 <details>
@@ -339,12 +335,16 @@ Content-Type: application/json
 
 </details>
 
+## 이슈관리
+- [SMTP Email 사용 속도 개선](https://diligent-mangosteen-06d.notion.site/SMTP-Email-57124080d4cb4e3383a014df0af2c95f?pvs=4)
+
 ## TIL 및 회고
 - [Dirty Checking에 대한 짧은 고찰](https://diligent-mangosteen-06d.notion.site/Dirty-Checking-e16ca9140ef24613b3766bee37156957?pvs=4)
 - [Security 3.0에서 주의할 점](https://diligent-mangosteen-06d.notion.site/Security-3-0-3a70cd637c3a472dbfefe4faadd793ca?pvs=4)
 - [jjwt 0.9와 jjwt 0.10 이상 버전 차이](https://chickencoc.tistory.com/21)
 - [QueryDsl](https://gabang2.notion.site/QueryDsl-43b0901997104bb89c96bcc4d9da78ed)
 - [GitHub에서 Pull Request의 Merge 종류 차이](https://chickencoc.tistory.com/26)
+
 ## Authors
 - [U-jinLee](https://github.com/U-jinLee)
 - [upqnu](https://github.com/upqnu)
