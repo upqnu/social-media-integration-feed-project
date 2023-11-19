@@ -303,7 +303,7 @@ Content-Type: application/json
 </details>
 
 ## 프로젝트 진행 및 이슈 관리
-> [![Notion](https://img.shields.io/badge/Github_project_-CLICK🖱-%23000000.svg?style=for-the-badge&logo=Github&logoColor=white)](https://github.com/users/U-jinLee/projects/1)<br>
+> [![Notion](https://img.shields.io/badge/Github_project_-CLICK🖱-%23000000.svg?style=for-the-badge&logo=Github&logoColor=white)](https://github.com/orgs/Team-Enigma23/projects/2/views/1)<br>
 >![img.png](src/main/resources/static/img/project.png)
 
 ## ERD
@@ -360,7 +360,7 @@ Content-Type: application/json
         <td><a href="https://github.com/U-jinLee">@U-jinLee</a></td>
         <td><a href="https://github.com/upqnu">@upqnu</a></td>
         <td><a href="https://github.com/gabang2">@gabang2</a></td>
-        <td><a href="https://github.com/hyerijang">@chickencoc</a></td>
+        <td><a href="https://github.com/chickencoc">@chickencoc</a></td>
     </tr>
 </table>
 </div>
