@@ -19,7 +19,7 @@ public class PostController {
     private final PostReadService postReadService;
     private final PostInteractionService postInteractionService;
 
-    @Operation(summary = "SNS 게시글 조회", description = "전체 SNS 게시글 전체 조회 기능입니다. 5개 단위로 페이지 네이션이 적용되어 있으며, 작성일 순으로 기본 정렬됩니다.")
+    @Operation(summary = "SNS 게시글 조회", description = "전체 SNS 게시글 전체 조회 기능입니다. 5개 단위로 페이지네이션이 적용되어 있으며, 작성일 순으로 기본 정렬됩니다.")
     @GetMapping
     public ResponseEntity<Page<Post>> getPosts(
             @RequestParam(required = false) String hashtag,
@@ -33,14 +33,14 @@ public class PostController {
         return ResponseEntity.ok(postsList);
     }
 
-    @Operation(summary = "SNS 게시글 상세조회", description = "SNS 게시글 상세 죄회 기능입니다.")
+    @Operation(summary = "SNS 게시글 상세조회", description = "SNS 게시글 상세 조회 기능입니다.")
     @GetMapping("/{postId}")
     public ResponseEntity<Post> getPost(@PathVariable Long postId) {
         Post post = postReadService.getPostById(postId);
         return ResponseEntity.ok(post);
     }
 
-    @Operation(summary = "SNS 게시글 좋아요", description = "SNS 게시글 좋아요 클릭시 좋아요 횟수가 증가합니다.")
+    @Operation(summary = "SNS 게시글 좋아요", description = "SNS 게시글 좋아요 클릭 시 좋아요 횟수가 증가합니다.")
     @GetMapping("/{postId}/likes")
     public ResponseEntity<?> likePost(@PathVariable Long postId) {
         postInteractionService.likePost(postId);

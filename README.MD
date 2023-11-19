@@ -8,6 +8,7 @@
 - [Running Tests](#running-tests)
 - [API Reference](#api-reference)
 - [프로젝트 진행 및 이슈 관리](#프로젝트-진행-및-이슈-관리)
+- [ERD](#ERD)
 - [구현과정(설계 및 의도)](#구현과정(설계-및-의도))
 - [TIL 및 회고](#til-및-회고)
 - [Authors](#authors)
@@ -302,15 +303,15 @@ Content-Type: application/json
 </details>
 
 ## 프로젝트 진행 및 이슈 관리
-프로젝트의 Issue, PR 진행은 아래 버튼을 눌러 확인할 수 있습니다.
-<br>
-[![Github Project](https://img.shields.io/badge/Github-%23000000.svg?style=for-the-badge&logo=Github&logoColor=white)](https://github.com/Team-Enigma23/location-based-gourmet-recommendation-project)
-[![Github Project](https://img.shields.io/badge/Github_Repository-%23000000.svg?style=for-the-badge&logo=Github&logoColor=white)](https://github.com/orgs/Team-Enigma23/projects/2)
+> [![Notion](https://img.shields.io/badge/Github_project_-CLICK🖱-%23000000.svg?style=for-the-badge&logo=Github&logoColor=white)](https://github.com/users/U-jinLee/projects/1)<br>
+>![img.png](src/main/resources/static/img/project.png)
+
+## ERD
+>![coverage](src/main/resources/static/img/table.png) <br/>
+> - 유저는 ID(`#HashtagId`)를 가지고 있고 자신의 ID와 연관된 SNS 게시글을 조회할 수 있습니다
+> - 게시글과 해시태그는 `N:M`의 관계를 가지고 있습니다.
 
 ## 구현과정(설계 및 의도)
-![coverage](src/main/resources/static/img/table.png) <br/>
-사용자는 자신의 해시태그를 등록하고, 해당 해시태그를 기반으로 게시물을 조회할 수 있습니다.
-
 <details>
 <summary>JWT 유저인증 - click</summary>
 - JWT를 활용한 유저 인증을 구현했습니다.<br>
@@ -346,7 +347,20 @@ Content-Type: application/json
 - [GitHub에서 Pull Request의 Merge 종류 차이](https://chickencoc.tistory.com/26)
 
 ## Authors
-- [U-jinLee](https://github.com/U-jinLee)
-- [upqnu](https://github.com/upqnu)
-- [gabang2](https://github.com/gabang2)
-- [chickencoc](https://github.com/chickencoc)
+<div align="center">
+
+<table>
+    <tr>
+        <th>이유진</th>
+        <th>윤준영</th>
+        <th>김가영</th>
+        <th>김성은</th>
+    </tr>
+    <tr>
+        <td><a href="https://github.com/U-jinLee">@U-jinLee</a></td>
+        <td><a href="https://github.com/upqnu">@upqnu</a></td>
+        <td><a href="https://github.com/gabang2">@gabang2</a></td>
+        <td><a href="https://github.com/hyerijang">@chickencoc</a></td>
+    </tr>
+</table>
+</div>
