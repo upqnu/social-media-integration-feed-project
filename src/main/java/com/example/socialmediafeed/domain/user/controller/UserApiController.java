@@ -26,12 +26,9 @@ public class UserApiController {
     private final UserSignInService userSignInService;
     private final UserApprovalService userApprovalService;
 
-    @Operation(summary = "사용자 회원가입", description = "사용자의 입력 정보를 받아 신규 사용자를 등록합니다.")
+    @Operation(summary = "사용자 회원가입", description = "사용자의 정보를 받아 신규 사용자를 등록합니다.")
     @PostMapping("/sign-up")
-    public ResponseEntity<SignupResDto> signUp(
-            @RequestBody
-            @Valid
-            SignupReqDto signupReqDto) {
+    public ResponseEntity<SignupResDto> signUp(@RequestBody @Valid SignupReqDto signupReqDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userSignupService.signUp(signupReqDto));
     }
 
@@ -42,20 +39,14 @@ public class UserApiController {
     * */
     @Operation(summary = "사용자 로그인", description = "사용자의 입력 정보를 받아 등록 여부, 비밀번호 일치 여부 확인 후 AccessToken을 반환합니다.")
     @PostMapping("/sign-in")
-    public ResponseEntity<CreateAccessTokenResDto> signIn(
-            @RequestBody
-            @Valid SignInReqDto signInReqDto) {
+    public ResponseEntity<CreateAccessTokenResDto> signIn(@RequestBody @Valid SignInReqDto signInReqDto) {
         return ResponseEntity.ok(userSignInService.signIn(signInReqDto));
     }
 
     @Operation(summary = "사용자 가입 인증", description = "사용자의 회원가입 후 발송된 이메일 인증 코드 확인 후 가입 승인 처리를 합니다.")
     @PatchMapping("/{id}/approval")
-    public ResponseEntity<Object> approval(
-            @PathVariable(name = "id")
-            Long id,
-            @RequestBody
-            @Valid
-            ApprovalReqDto approvalReqDto) {
+    public ResponseEntity<Object> approval(@PathVariable(name = "id") Long id,
+                                           @RequestBody @Valid ApprovalReqDto approvalReqDto) {
         userApprovalService.approve(id, approvalReqDto);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

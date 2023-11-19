@@ -2,8 +2,11 @@ package com.example.socialmediafeed.domain.post.controller;
 
 import com.example.socialmediafeed.IntegrationTest;
 import com.example.socialmediafeed.domain.post.entity.Post;
+import com.example.socialmediafeed.domain.post.repository.PostRepository;
+import com.example.socialmediafeed.domain.setup.PostSetup;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -11,12 +14,20 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class PostControllerTest extends IntegrationTest {
 
+    @Autowired
+    PostSetup postSetup;
+    @Autowired
+    PostRepository postRepository;
+
     @Test
-    public void testTotalPostsCount() throws Exception {
+    void testTotalPostsCount() throws Exception {
         String uri = "/posts";
 
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
@@ -33,7 +44,7 @@ class PostControllerTest extends IntegrationTest {
     }
 
     @Test
-    public void testGetPosts() throws Exception {
+    void testGetPosts() throws Exception {
 
         String uri = "/posts";
 
@@ -55,7 +66,7 @@ class PostControllerTest extends IntegrationTest {
     }
 
     @Test
-    public void testGetPostById() throws Exception {
+    void testGetPostById() throws Exception {
         Long postId = 20L;
         Logger logger = Logger.getLogger(getClass().getName());
 
@@ -74,40 +85,39 @@ class PostControllerTest extends IntegrationTest {
     }
 
     @Test
-    void countLikesOnPost() throws Exception {
-        Long postId = 5L;
-        Logger logger = Logger.getLogger(getClass().getName());
+    void post_like_count_plus_success() throws Exception {
+        //given
+        Post post = postSetup.build();
+        assertEquals(0, post.getLikeCount());
+        //when
 
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get("/posts/" + postId + "/likes")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        assertEquals(200, status);
-
-        String content = mvcResult.getResponse().getContentAsString();
-        Post post = objectMapper.readValue(content, Post.class);
-        int initialLikeCount = post.getLikeCount();
-
-        logger.info("Initial likeCount: " + initialLikeCount);
+        //then
+        mvc.perform(
+                get("/posts/{id}/likes", post.getId())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                )
+                .andDo(print())
+                .andExpect(status().isOk());
+        post = postRepository.findById(post.getId()).get();
+        assertEquals(1, post.getLikeCount());
     }
 
     @Test
-    void countSharesOnPost() throws Exception {
-        Long postId = 10L;
-        Logger logger = Logger.getLogger(getClass().getName());
+    void post_share_count_plus_success() throws Exception {
+        //given
+        Post post = postSetup.build();
+        assertEquals(0, post.getLikeCount());
+        //when
 
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get("/posts/" + postId + "/shares")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        assertEquals(200, status);
-
-        String content = mvcResult.getResponse().getContentAsString();
-        Post post = objectMapper.readValue(content, Post.class);
-        int initialShareCount = post.getShareCount();
-
-        logger.info("Initial shareCount: " + initialShareCount);
+        //then
+        mvc.perform(
+                        get("/posts/{id}/shares", post.getId())
+                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                )
+                .andDo(print())
+                .andExpect(status().isOk());
+        post = postRepository.findById(post.getId()).get();
+        assertEquals(1, post.getShareCount());
     }
+
 }

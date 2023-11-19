@@ -19,9 +19,9 @@ public class PostInteractionService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("게시물을 찾을 수 없습니다."));
 
-        post.incrementLikeCount();
-
         snsFeedService.searchSns();
+
+        post.incrementLikeCount();
     }
 
     @Transactional
