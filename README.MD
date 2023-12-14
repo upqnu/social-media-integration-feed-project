@@ -1,9 +1,15 @@
-![logo](src/main/resources/static/img/logo.jpg)
+본 "MINE" 브랜치는 팀 프로젝트 "소셜 미디어 통합 Feed 서비스 MOA"의 GitHub repository를 본인의 GitHub으로 fork한 후, 다시 새롭게 분기한 브랜치이다.
+  
+분기한 목적은 (1) 팀 프로젝트에서 본인이 구현한 기능의 포트폴리오 (2) 추후 본인이 의도한대로 코드 리팩토링 또는 기능 추가
+  
+* (팀 프로젝트 확인 : https://github.com/Team-Enigma23/social-media-integration-feed-project)
+  
+---
   
 # :pushpin: 소셜 미디어 통합 Feed 서비스 MOA
 > **소셜 미디어 Feed 여기 다 MOA!** 
 > 
-> 복수의 SNS에 게시된 게시물 중 유저의 해시태그가 포함된 게시물들을 하나의 서비스에서 확인할 수 있는 통합 Feed 어플리케이션
+> 복수의 SNS 게시물 중 유저의 해시태그가 포함된 게시물들을 하나의 서비스에서 확인할 수 있는 통합 Feed 어플리케이션
   
 ## <포트폴리오 순서>
 1. [제작기간 및 참여인원](#1제작기간-및-참여인원) 
@@ -11,11 +17,10 @@
 3. [사용기술](#3사용기술)  
 4. [ERD 설계](#4erd-설계)
 5. [본인 구현 기능](#5본인-구현-기능)
-6. [중요 트러블 슈팅](#6중요-트러블-슈팅)
-7. [기타 트러블 슈팅](#7기타-트러블-슈팅)
+6. [트러블 슈팅 & TIL](#6트러블-슈팅--til)
   
 - [Git commit 메시지 컨벤션](#Git-commit-메시지-컨벤션)
-- [API Reference](#api-reference)
+- [본인 구현 API Reference](#본인-구현-api-reference)
   
 ## 1.제작기간 및 참여인원
 - 제작기간 : 2023년 10월 25일 ~ 10월 30일
@@ -36,65 +41,39 @@
     
 ## 5.본인 구현 기능
 
-- 사용자(Member), 팀(Team), 작업상황(Progress), 티켓(Ticket) 대상으로 16개의 API 구현
+- SNS피드(POST) 대상으로 조회, 상세 조회, 좋아요 및 공유 API 구현 / dummy data 생성
   
 <details>
-<summary>1st phase (2023.11.16~11.24) ; 사용자 생성 및 JWT를 통한 인증, (프로젝트 진행할) 팀 생성 및 구성, 작업상황 및 티켓 구현을 통해  서비스 구현</summary>
 
-1. 사용자 회원가입 및 <u>**JWT**를 통한 사용자 인증</u> 구현
-    - 사용자 로그인과 동시에 액세스 토큰 발급 후, API 요청 헤더에 담아 사용자 인증
-    - 액세스 토큰 유효시간(30분) 만료 시, 토큰 타입을 “refresh”로 입력하여 유효기간이 1주일로 연장된 새로운 액세스 토큰 발급
+1. 게시글 리스트 조회  
+   - **`:hashtag`** 매개변수에 따라 **`Post`** 엔티티에서 게시물을 검색
+       - Querydsl 활용하여 검색어를 포함한 모든 게시글을 검색 후, 검색 결과를 offset 방식의 pagination 및 최신순(생성일자 기준)으로 노출
+   - 검색한 결과에 Pagination 및 Sort 적용
+       - offset 방식의 pagination 구현, 최신순(생성일자 기준)으로 정렬
   
   
-2. 팀 생성, 팀원 초대를 통한 팀 구성
-    - <u>**팀 생성**</u> ; Team 및 TeamSetting 엔티티를 통해 팀의 정보를 구성
-        - Member, Team의 관계는 다수 Member가 다수 Team의 구성원이 될 수 있는 N : M이므로  → TeamSetting 엔티티를 생성하여 Member, Team과의 연관관계를 N : 1, M : 1 로 설정
-            - 관계형 데이터베이스에서 Member, Team 테이블은 연결할 TeamSetting 테이블을 엔티티로 생성한다.
-        - TeamSetting 엔티티는 enum 타입의 InviteStatus를 설정하여 팀과 관련된 사용자의 권한을 4가지로 설정하는 역할을 수행
-            - INVITING ; 팀을 생성한 사용자에게만 주어짐 (팀장 권한)
-            - RECEIVED ; 팀장이 보낸 팀으로의 초대를 받은 사용자
-            - ACCEPTED ; 초대를 수락하여 팀원이 된 사용자
-            - REFUSED ; 초대를 거절한 사용자
-        - 팀 생성 과정 중 팀명 등의 기본 정보는 Team 타입으로 저장되지만, 해당 팀의 구성원 정보는 TeamSetting 타입으로 저장됨.  
-    - <u>**팀원으로 초대 및 수락/거절**</u> ; TeamSetting의 InviteStatus 필드(enum타입) 값에 따라 팀원을 초대, 초대장 수신, 초대를 수락, 초대를 거절한 팀원의 상태를 구분. 따라서 초대와 관련된 DB테이블을 별도로 만들 필요가 없음.
-        - 팀장만이 다른 사용자를 팀원으로 초대할 수 있음
-            - TeamSetting에서 InviteStatus.INVITING인 사용자만 초대가 가능하도록 구현
-        - 특정 사용자가 특정 팀으로의 초대에 대해 수락 또는 거절
-            - TeamSetting에서 InviteStatus.RECEIVED인 사용자만 초대에 대해 수락 또는 거절을 할 수 있음
-            - InviteStatus는 수락 시 ACCEPTED, 거절 시 REFUSED로 변경됨
-        - (본 프로젝트는 REST API 구현하므로, InviteStatus에 따라 초대와 관련된 액션을 구현하는 것은 프런트엔드에서 처리 가능)
+2. 개별 게시글 상세 조회
   
   
-3. 진행상황(Progress) / 티켓 (Ticket) ; 생성, 조회, 수정, 삭제
-    - 팀 내부에 생성할 수 있는 진행상황(Progress)는 칸반보드에서 column과 같은 역할
-    - 진행상황 내부에 생성할 수 있는 티켓(Ticket)은 칸반보드에서의 개별작업과 같은 역할
-    - 진행상황/티켓 생성과 동시에 순서가 정해지며, 순서는 변경이 가능
+3. 개별 게시글에 대한 좋아요/공유 (생성)
+   - SNS게시물에 대한 좋아요/공유가 발생했을 경우 본 서비스에서 자동적으로 이를 인지하는 것이 자연스러우나, 프로젝트의 조건에 따라 임의로 좋아요/공유를 생성시켰음.
+   - 따라서 API 실행 시 좋아요/공유 수를 +1하면서 해당 피드들을 호출하도록 구현 (실제 호출되지는 않음)
   
   
-4. 서버 구동과 동시에 dummy data 생성
-    - ApplicationRunner 인터페이스를 구현한 DummyDataLoader 클래스, dummy로 생성되어야 할 객체의 정보들을 입력한 DummyDataService 클래스를 통해 Member, Team, TeamSetting, Progress, Ticket의 dummy data가 각각 20, 4, 15, 2, 5개가 서버 구동과 동시에 생성됨
-</details>
-
-<details>
-<summary>2nd phase (2023.12. 1~현재) ; 메서드 모듈화를 통해 코드 중복 제거, Test code 작성, Swagger 도입</summary>
-  
-1. 메서드 모듈화를 통해 코드 중복 제거  
-    - 1st phase에서 진행상황(Progress), 티켓(Ticket)의 Service 클래스에 작성된 메서드들은 내부에는 많은 중복이 존재. 이를 별도의 메서드로 작성하여 중복 제거.  
-        - 중복되는 로직 : (1) 팀, 진행상황, 티켓의 존재 여부 (2) 로그인한 사용자의 팀내에서의 역할  
-        - 중복 로직을 별도의 메서드로 작성하여 제거  
-    - 개선 결과 : 총 9개의 비즈니스 로직 담당 메서드 별 최소 5라인, 최대 13라인의 코드 감소 및 가독성 개선  
+4. 구현한 API의 정상 작동여부를 간편하게 테스트하기 위한 dummy data (dummy Post) 구현
+   - ApplicationRunner 인터페이스를 구현한 DummyDataLoader 클래스, dummy로 생성되어야 할 객체(Post)의 정보들을 입력한 DummyDataService 클래스를 통해 2개의 hastTag, 20개의 post, 8개의 postHashtag가 서버 구동과 동시에 생성됨
 </details>
   
-## 6.중요 트러블 슈팅
+  
+## 6.트러블 슈팅 & TIL
 
-1. member, team 의 다대다 관계 (1) teamSetting 연결테이블로 풀어보기 (<a href="https://github.com/upqnu/prj_uc/wiki/member,%20team%20%EC%9D%98%20%EB%8B%A4%EB%8C%80%EB%8B%A4%20%EA%B4%80%EA%B3%84%20(1)%20teamSetting%20%EC%97%B0%EA%B2%B0%ED%85%8C%EC%9D%B4%EB%B8%94%EB%A1%9C%20%ED%92%80%EC%96%B4%EB%B3%B4%EA%B8%B0">클릭 & detail 확인</a>)
+1. 빌더 패턴, 잘 알고 쓰자! (<a href="https://github.com/upqnu/social-media-integration-feed-project/wiki/%EB%B9%8C%EB%8D%94%20%ED%8C%A8%ED%84%B4,%20%EC%9E%98%20%EC%95%8C%EA%B3%A0%20%EC%93%B0%EC%9E%90!">클릭 & detail 확인</a>)
   
-2. member, team 의 다대다 관계 (2) teamSetting으로 초대 관련 기능을 쉽게 구현 (<a href="https://github.com/upqnu/prj_uc/wiki/member,%20team%20%EC%9D%98%20%EB%8B%A4%EB%8C%80%EB%8B%A4%20%EA%B4%80%EA%B3%84%20(2)%20teamSetting%EC%9C%BC%EB%A1%9C%20%EC%B4%88%EB%8C%80%20%EA%B4%80%EB%A0%A8%20%EA%B8%B0%EB%8A%A5%EC%9D%84%20%EC%89%BD%EA%B2%8C%20%EA%B5%AC%ED%98%84">클릭 & detail 확인</a>)
-  
-## 7.기타 트러블 슈팅
-  
-  
-  
+2. @NoArgsConstructor, @AllArgsConstructor ; 그냥 쓰면 안 되는 거였냐 (<a href="https://github.com/upqnu/social-media-integration-feed-project/wiki/@NoArgsConstructor,%20@AllArgsConstructor%20;%20%EA%B7%B8%EB%83%A5%20%EC%93%B0%EB%A9%B4%20%EC%95%88%20%EB%90%98%EB%8A%94%20%EA%B1%B0%EC%98%80%EB%83%90?%20%E2%80%A6">클릭 & detail 확인</a>)
+    
+3. ueryDSL을 활용한 게시물 검색 기능 구현 (with pagination sort) (<a href="https://github.com/upqnu/social-media-integration-feed-project/wiki/QueryDSL%EC%9D%84%20%ED%99%9C%EC%9A%A9%ED%95%9C%20%EA%B2%8C%EC%8B%9C%EB%AC%BC%20%EA%B2%80%EC%83%89%20%EA%B8%B0%EB%8A%A5%20%EA%B5%AC%ED%98%84%20%20(with%20pagination%20+%20sort)">클릭 & detail 확인</a>)
+
+
   
 ---
   
@@ -107,7 +86,7 @@
 - `Test` : 테스트 코드, 리펙토링 테스트 코드 추가
 - `Chore` : 빌드 업무 수정, 패키지 매니저 수정
   
-## API Reference
+## 본인 구현 API Reference
   
 ### Post
 <details>
