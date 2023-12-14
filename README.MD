@@ -71,7 +71,7 @@
   
 2. @NoArgsConstructor, @AllArgsConstructor ; 그냥 쓰면 안 되는 거였냐 (<a href="https://github.com/upqnu/social-media-integration-feed-project/wiki/@NoArgsConstructor,%20@AllArgsConstructor%20;%20%EA%B7%B8%EB%83%A5%20%EC%93%B0%EB%A9%B4%20%EC%95%88%20%EB%90%98%EB%8A%94%20%EA%B1%B0%EC%98%80%EB%83%90?%20%E2%80%A6">클릭 & detail 확인</a>)
     
-3. ueryDSL을 활용한 게시물 검색 기능 구현 (with pagination sort) (<a href="https://github.com/upqnu/social-media-integration-feed-project/wiki/QueryDSL%EC%9D%84%20%ED%99%9C%EC%9A%A9%ED%95%9C%20%EA%B2%8C%EC%8B%9C%EB%AC%BC%20%EA%B2%80%EC%83%89%20%EA%B8%B0%EB%8A%A5%20%EA%B5%AC%ED%98%84%20%20(with%20pagination%20+%20sort)">클릭 & detail 확인</a>)
+3. QueryDSL을 활용한 게시물 검색 기능 구현 (with pagination sort) (<a href="https://github.com/upqnu/social-media-integration-feed-project/wiki/QueryDSL%EC%9D%84%20%ED%99%9C%EC%9A%A9%ED%95%9C%20%EA%B2%8C%EC%8B%9C%EB%AC%BC%20%EA%B2%80%EC%83%89%20%EA%B8%B0%EB%8A%A5%20%EA%B5%AC%ED%98%84%20%20(with%20pagination%20+%20sort)">클릭 & detail 확인</a>)
 
 
   
