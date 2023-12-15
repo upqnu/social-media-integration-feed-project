@@ -66,15 +66,45 @@
   
   
 ## 6.트러블 슈팅 & TIL
+[트러블 슈팅]
+> 
+> 1. 빌더 패턴, 잘 알고 쓰자! (<a href="https://github.com/upqnu/social-media-integration-feed-project/wiki/%EB%B9%8C%EB%8D%94%20%ED%8C%A8%ED%84%B4,%20%EC%9E%98%20%EC%95%8C%EA%B3%A0%20%EC%93%B0%EC%9E%90!">클릭 & detail 확인</a>)
+> 
+> 2. @NoArgsConstructor, @AllArgsConstructor ; 그냥 쓰면 안 되는 거였냐 (<a href="https://github.com/upqnu/social-media-integration-feed-project/wiki/@NoArgsConstructor,%20@AllArgsConstructor%20;%20%EA%B7%B8%EB%83%A5%20%EC%93%B0%EB%A9%B4%20%EC%95%88%20%EB%90%98%EB%8A%94%20%EA%B1%B0%EC%98%80%EB%83%90?%20%E2%80%A6">클릭 & detail 확인</a>)
+> 
+> 3. QueryDSL을 활용한 게시물 검색 기능 구현 (with pagination sort) (<a href="https://github.com/upqnu/social-media-integration-feed-project/wiki/QueryDSL%EC%9D%84%20%ED%99%9C%EC%9A%A9%ED%95%9C%20%EA%B2%8C%EC%8B%9C%EB%AC%BC%20%EA%B2%80%EC%83%89%20%EA%B8%B0%EB%8A%A5%20%EA%B5%AC%ED%98%84%20%20(with%20pagination%20+%20sort)">클릭 & detail 확인</a>)
+>
+   
+[TIL]
+<details>
+<summary>spring boot 프로젝트를 만들어나가는 데 필요한 기본적인 부분을 더 깊게 이해할 수 있는 좋은 기회였다.</summary>
 
-1. 빌더 패턴, 잘 알고 쓰자! (<a href="https://github.com/upqnu/social-media-integration-feed-project/wiki/%EB%B9%8C%EB%8D%94%20%ED%8C%A8%ED%84%B4,%20%EC%9E%98%20%EC%95%8C%EA%B3%A0%20%EC%93%B0%EC%9E%90!">클릭 & detail 확인</a>)
+1. 클래스 레벨에서만 선언하고 사용하였던 빌더 패턴을 → 클래스 내부의 생성자에 선언하면, 빌더 패턴은 이 생성자에서 정의한 필드에만 적용된다.
+2. '@NoArgsConstructor'에 '(access = AccessLevel.PROTECTED)'라는 속성을 주는 이유는 함부로 또는 불필요하게 기본 생성자가 생성되는 것을 막기 위해서이다.
+
+- (위 트러블 슈팅 2번 참고)
+</details>
+  <br>
+<details>
+<summary>단 하나의 API에 적용하긴 했지만 처음으로 queryDSL을 사용하여 게시물 검색 기능을 구현하였다.</summary>
   
-2. @NoArgsConstructor, @AllArgsConstructor ; 그냥 쓰면 안 되는 거였냐 (<a href="https://github.com/upqnu/social-media-integration-feed-project/wiki/@NoArgsConstructor,%20@AllArgsConstructor%20;%20%EA%B7%B8%EB%83%A5%20%EC%93%B0%EB%A9%B4%20%EC%95%88%20%EB%90%98%EB%8A%94%20%EA%B1%B0%EC%98%80%EB%83%90?%20%E2%80%A6">클릭 & detail 확인</a>)
-    
-3. QueryDSL을 활용한 게시물 검색 기능 구현 (with pagination sort) (<a href="https://github.com/upqnu/social-media-integration-feed-project/wiki/QueryDSL%EC%9D%84%20%ED%99%9C%EC%9A%A9%ED%95%9C%20%EA%B2%8C%EC%8B%9C%EB%AC%BC%20%EA%B2%80%EC%83%89%20%EA%B8%B0%EB%8A%A5%20%EA%B5%AC%ED%98%84%20%20(with%20pagination%20+%20sort)">클릭 & detail 확인</a>)
+- 많은 구글링을 통해 queryDSL을 통해 검색 기능을 구현하였고, 더불어서 @Query를 사용하여 구현하는 방법과의 코드 차이를 알 수 있었다.
+- 검색은 많은 스프링 부트 프로젝트에서 구현하는 기능이므로 향후 개인 프로젝트 구현 시, queryDSL을 반드시 활용할 예정이다.
 
+- (위 트러블 슈팅 3번 참고)
+</details>
+  <br>
+<details>
+<summary>게시물 좋아요, 공유 기능 구현에서 팀원들에게 도움을 받았다. 나도 도움을 주는 개발자가 되어야겠다는 생각이 들면서 상대의 어려움에 접근하는 방식의 중요성도 깨달을 수 있었다.</summary>
 
-  
+- 이 프로젝트는 실제 sns 피드를 취합하는 기능까지는 구현하지 않았기에 - 게시물 좋아요 및 공유 또한 “가짜로”(실제 아무 일도 일어나지 않는) 해당 피드가 호출되는 동작을 구현해야 했다.
+- 문제는 이전까지 “가짜로” 특정 기능이 구현해 본 경험이 없다는 것이었다. 코드 구현 방향을 잡는 것 자체가 막막했다.
+- 팀원들은 이런 막막함을 SnsFeedService라는 인터페이스를 구현(implements)한 SnsFeedServiceImpl 클래스 작성을 통해 해결하기를 권장하였다.
+    - SnsFeedService 인터페이스는 void searchSns()라는 메서드만 존재
+    - SnsFeedServiceImpl 클래스는 searchSns()를 override하여 “전송 성공”이라는 메시지만 내보내도록 구체화
+- 이는 추후 실제 sns피드 호출 기능을 구현 시, 다형성에 기반한 인터페이스 구현 객체를 SnsFeedService 클래스 대신 다른 클래스로 유연하게 변경하려는 목적도 있음을 설명해주었다.
+</details>
+
 ---
   
 ## Git commit 메시지 컨벤션
@@ -95,6 +125,7 @@
     
 ## 본인 구현 API Reference
   
+### Post 엔티티
 <details>
 <summary> 게시물 불러오기 - click</summary>
 
