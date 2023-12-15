@@ -18,6 +18,7 @@
 4. [ERD 설계](#4erd-설계)
 5. [본인 구현 기능](#5본인-구현-기능)
 6. [트러블 슈팅 & TIL](#6트러블-슈팅--til)
+7. [회고](#7회고)
   
 - [Git commit 메시지 컨벤션](#Git-commit-메시지-컨벤션)
 - [본인 구현 API Reference](#본인-구현-api-reference)
@@ -66,7 +67,6 @@
   
   
 ## 6.트러블 슈팅 & TIL
-[트러블 슈팅]
 > 
 > 1. 빌더 패턴, 잘 알고 쓰자! (<a href="https://github.com/upqnu/social-media-integration-feed-project/wiki/%EB%B9%8C%EB%8D%94%20%ED%8C%A8%ED%84%B4,%20%EC%9E%98%20%EC%95%8C%EA%B3%A0%20%EC%93%B0%EC%9E%90!">클릭 & detail 확인</a>)
 > 
@@ -75,7 +75,8 @@
 > 3. QueryDSL을 활용한 게시물 검색 기능 구현 (with pagination sort) (<a href="https://github.com/upqnu/social-media-integration-feed-project/wiki/QueryDSL%EC%9D%84%20%ED%99%9C%EC%9A%A9%ED%95%9C%20%EA%B2%8C%EC%8B%9C%EB%AC%BC%20%EA%B2%80%EC%83%89%20%EA%B8%B0%EB%8A%A5%20%EA%B5%AC%ED%98%84%20%20(with%20pagination%20+%20sort)">클릭 & detail 확인</a>)
 >
    
-[TIL]
+## 7.회고
+  
 <details>
 <summary>spring boot 프로젝트를 만들어나가는 데 필요한 기본적인 부분을 더 깊게 이해할 수 있는 좋은 기회였다.</summary>
 
